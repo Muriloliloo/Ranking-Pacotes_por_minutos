@@ -1,0 +1,1145 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Top por Pacotes/Minutos</title>
+  <style>
+    :root {
+      --yellow: #ffd200;
+      --yellow-soft: #fff3a5;
+      --red: #df0012;
+      --metal: #073556;
+      --metal-dark: #021c31;
+      --gold: #f2b500;
+      --green: #9bd78b;
+      --amber: #ffe35a;
+      --danger: #ff2d2d;
+      --ink: #26220e;
+      --grid: rgba(167, 122, 0, .32);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: #1f1f1f;
+      color: var(--ink);
+      font-family: "Segoe UI", Arial, sans-serif;
+    }
+
+    .board {
+      width: min(100vw, 900px);
+      aspect-ratio: 900 / 570;
+      min-height: 570px;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(255,255,255,.45), transparent 26%),
+        linear-gradient(180deg, #ffdb12 0, #ffe55e 18%, #fff8d5 31%, #fff7cc 100%);
+      border: 3px solid #111;
+      overflow: hidden;
+      display: grid;
+      grid-template-rows: 104px 1fr;
+      position: relative;
+    }
+
+    .top {
+      text-align: center;
+      display: grid;
+      align-content: center;
+      gap: 2px;
+      padding-top: 4px;
+    }
+
+    .dhl {
+      margin: 0 auto;
+      color: var(--red);
+      font: italic 950 34px/0.78 "Arial Black", Impact, sans-serif;
+      letter-spacing: -2px;
+      width: max-content;
+      position: relative;
+      transform: skewX(-10deg);
+    }
+
+    .dhl::before,
+    .dhl::after {
+      content: "";
+      position: absolute;
+      top: 47%;
+      width: 60px;
+      height: 12px;
+      border-top: 3px solid currentColor;
+      border-bottom: 3px solid currentColor;
+      transform: skewX(10deg);
+    }
+
+    .dhl::before { right: calc(100% + 8px); }
+    .dhl::after { left: calc(100% + 8px); }
+
+    h1 {
+      margin: 0;
+      color: var(--red);
+      font: 950 36px/1 "Segoe UI Black", "Arial Black", Impact, sans-serif;
+      letter-spacing: .8px;
+      text-transform: uppercase;
+      text-shadow: 0 1px 0 rgba(255,255,255,.35);
+    }
+
+    .view-tabs {
+      display: inline-flex;
+      justify-self: center;
+      gap: 6px;
+      margin-top: 4px;
+      padding: 3px;
+      border-radius: 8px;
+      background: rgba(71, 38, 0, .14);
+      box-shadow: inset 0 0 0 1px rgba(121, 73, 0, .18);
+    }
+
+    .view-tabs button {
+      min-width: 142px;
+      height: 24px;
+      border: 0;
+      border-radius: 6px;
+      background: rgba(255,255,255,.42);
+      color: #5d0b0b;
+      font: 900 10px "Segoe UI", Arial, sans-serif;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
+    .view-tabs button.active {
+      background: linear-gradient(180deg, var(--metal), var(--metal-dark));
+      color: #fff;
+      box-shadow: inset 0 -3px 0 var(--gold), 0 3px 8px rgba(0,0,0,.14);
+    }
+
+    .table-wrap {
+      margin: 0 9px 9px;
+      border-radius: 8px 8px 0 0;
+      overflow: auto;
+      box-shadow: 0 0 0 1px rgba(180, 110, 0, .35);
+      background: rgba(255, 249, 204, .95);
+    }
+
+    table {
+      width: 100%;
+      height: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      font-size: 9px;
+      font-weight: 800;
+    }
+
+    .board.hora-view table { height: auto; }
+
+    thead th {
+      background: linear-gradient(180deg, var(--metal), var(--metal-dark));
+      color: white;
+      height: 25px;
+      text-transform: uppercase;
+      font-size: 10px;
+      letter-spacing: .15px;
+      border-right: 1px solid rgba(255,255,255,.18);
+      border-bottom: 2px solid var(--gold);
+    }
+
+    thead th.extra-hour { display: none; }
+    .board.hora-view thead th.extra-hour { display: table-cell; }
+
+    th:nth-child(1), td:nth-child(1) { width: 110px; }
+    th:nth-child(2), td:nth-child(2) { width: auto; }
+    th:nth-child(3), td:nth-child(3) { width: 158px; }
+    th:nth-child(4), td:nth-child(4) { width: 154px; }
+    th:nth-child(5), td:nth-child(5) { width: 130px; }
+
+    .board.gestor-view th:nth-child(1),
+    .board.gestor-view td:nth-child(1) { width: 285px; }
+    .board.gestor-view th:nth-child(2),
+    .board.gestor-view td:nth-child(2) { width: 155px; }
+    .board.gestor-view th:nth-child(3),
+    .board.gestor-view td:nth-child(3) { width: 145px; }
+    .board.gestor-view th:nth-child(4),
+    .board.gestor-view td:nth-child(4) { width: 110px; }
+    .board.gestor-view th:nth-child(5),
+    .board.gestor-view td:nth-child(5) { width: 185px; }
+
+    .board.hora-view {
+      grid-template-rows: 96px minmax(0, 1fr);
+    }
+
+    .board.hora-view .view-tabs button {
+      min-width: 132px;
+      font-size: 9px;
+    }
+
+    .board.hora-view .table-wrap {
+      margin: 0 7px 7px;
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+
+    .board.hora-view th:nth-child(1),
+    .board.hora-view td:nth-child(1) { width: 105px; }
+    .board.hora-view th:nth-child(2),
+    .board.hora-view td:nth-child(2) { width: 235px; }
+    .board.hora-view th:nth-child(3),
+    .board.hora-view td:nth-child(3),
+    .board.hora-view th:nth-child(4),
+    .board.hora-view td:nth-child(4),
+    .board.hora-view th:nth-child(5),
+    .board.hora-view td:nth-child(5),
+    .board.hora-view th:nth-child(6),
+    .board.hora-view td:nth-child(6) { width: 68px; }
+    .board.hora-view th:nth-child(7),
+    .board.hora-view td:nth-child(7) { width: 82px; }
+    .board.hora-view th:nth-child(8),
+    .board.hora-view td:nth-child(8) { width: 118px; }
+
+    tbody td {
+      height: 11.5px;
+      border: 1px solid rgba(210, 165, 35, .35);
+      background: rgba(255, 249, 214, .68);
+      text-align: center;
+      line-height: 1;
+      padding: 0 5px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .board.hora-view tbody td {
+      height: 11px;
+      padding: 0 4px;
+      font-size: 8.7px;
+    }
+
+    tbody tr.top-three td {
+      height: 25px;
+      font-size: 11px;
+      background: linear-gradient(90deg, rgba(255, 235, 90, .92), rgba(255, 249, 196, .82));
+    }
+
+    tbody tr.top-three:nth-child(1) td { background: linear-gradient(90deg, rgba(255, 219, 75, .95), rgba(255, 243, 135, .9)); }
+    tbody tr.top-three:nth-child(2) td { background: linear-gradient(90deg, rgba(246, 246, 246, .95), rgba(255, 244, 149, .86)); }
+    tbody tr.top-three:nth-child(3) td { background: linear-gradient(90deg, rgba(255, 176, 71, .95), rgba(255, 236, 132, .86)); }
+
+    .pos {
+      font-weight: 950;
+      color: #292929;
+    }
+
+    .medal {
+      display: inline-grid;
+      place-items: center;
+      width: 23px;
+      height: 23px;
+      border-radius: 50%;
+      color: #3e2b00;
+      font: 950 15px/1 "Segoe UI", Arial, sans-serif;
+      box-shadow: inset 0 2px 2px rgba(255,255,255,.75), 0 1px 2px rgba(0,0,0,.25);
+      border: 1px solid rgba(0,0,0,.2);
+    }
+
+    .gold { background: linear-gradient(#ffe17a, #d79a19); }
+    .silver { background: linear-gradient(#ffffff, #bfc5cc); }
+    .bronze { background: linear-gradient(#ffc071, #c66a17); }
+
+    .name {
+      text-align: left;
+      font-weight: 900;
+      padding-left: 30px;
+    }
+
+    .metric-cell {
+      color: #143f19;
+      font-weight: 950;
+    }
+
+    .gestor {
+      text-align: left;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+    }
+
+    .board.hora-view td.gestor {
+      padding-left: 16px;
+      text-align: left;
+    }
+
+    .group-row td {
+      height: 20px;
+      background: linear-gradient(90deg, var(--metal-dark), var(--metal) 55%, #0f4a70) !important;
+      color: #fff;
+      text-align: left;
+      font-size: 10px;
+      font-weight: 950;
+      letter-spacing: .2px;
+      text-transform: uppercase;
+      border-top: 1px solid var(--gold);
+      border-bottom: 1px solid var(--gold);
+    }
+
+    .action {
+      font-weight: 950;
+      text-transform: uppercase;
+      color: #181818;
+    }
+
+    .board.hora-view td.action {
+      text-align: left;
+      padding-left: 12px;
+    }
+
+    .units {
+      color: var(--red);
+      font-weight: 950;
+    }
+
+    tbody tr:not(.top-three) .units {
+      color: #333;
+    }
+
+    .tools {
+      position: fixed;
+      right: 14px;
+      top: 14px;
+      display: flex;
+      gap: 8px;
+      z-index: 5;
+    }
+
+    .tools button {
+      border: 0;
+      border-radius: 6px;
+      background: #111;
+      color: white;
+      padding: 8px 10px;
+      font: 800 11px "Segoe UI", Arial, sans-serif;
+      cursor: pointer;
+      box-shadow: 0 10px 30px rgba(0,0,0,.22);
+    }
+
+    .editor {
+      position: fixed;
+      inset: 20px 20px 20px auto;
+      width: min(760px, calc(100vw - 40px));
+      background: #fff9d9;
+      border: 2px solid #d4a600;
+      border-radius: 8px;
+      box-shadow: 0 18px 60px rgba(0,0,0,.35);
+      z-index: 10;
+      display: none;
+      grid-template-rows: auto 1fr auto;
+      overflow: hidden;
+      font-family: "Segoe UI", Arial, sans-serif;
+    }
+
+    .editor.open { display: grid; }
+
+    .editor header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 14px;
+      background: var(--yellow);
+      border-bottom: 1px solid #c99b00;
+    }
+
+    .editor h2 {
+      margin: 0;
+      color: var(--red);
+      text-transform: uppercase;
+      font-size: 18px;
+    }
+
+    .close {
+      width: 32px;
+      height: 32px;
+      border: 0;
+      border-radius: 5px;
+      background: #111;
+      color: white;
+      cursor: pointer;
+      font-weight: 900;
+    }
+
+    .editor-body {
+      overflow: auto;
+      padding: 12px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .paste-help {
+      margin: 0;
+      font: 700 12px/1.35 "Segoe UI", Arial, sans-serif;
+      color: #4a3a00;
+    }
+
+    .paste-grid {
+      display: grid;
+      grid-template-columns: 1.35fr .75fr .6fr 1.35fr;
+      gap: 10px;
+    }
+
+    .paste-field {
+      display: grid;
+      gap: 5px;
+      min-width: 0;
+    }
+
+    .paste-field label {
+      color: #1f1f1f;
+      font: 900 12px "Segoe UI", Arial, sans-serif;
+      text-transform: uppercase;
+    }
+
+    .paste-field textarea {
+      width: 100%;
+      height: 360px;
+      border: 1px solid #c7b174;
+      border-radius: 5px;
+      padding: 7px;
+      font: 700 12px/1.35 Consolas, "Segoe UI", monospace;
+      background: white;
+      resize: vertical;
+    }
+
+    .editor-actions {
+      padding: 12px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      border-top: 1px solid #d4bd7d;
+      background: #fff0aa;
+    }
+
+    .editor-actions button {
+      border: 0;
+      border-radius: 6px;
+      padding: 9px 12px;
+      font: 900 12px "Segoe UI", Arial, sans-serif;
+      cursor: pointer;
+      text-transform: uppercase;
+    }
+
+    .hour-select {
+      border: 0;
+      border-radius: 6px;
+      padding: 9px 12px;
+      background: #fff;
+      color: #111;
+      font: 900 12px "Segoe UI", Arial, sans-serif;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
+    .primary { background: var(--red); color: white; }
+    .secondary { background: #111; color: white; }
+    .danger { background: #7b0007; color: white; }
+
+    @media print {
+      body { background: white; }
+      .board { width: 100vw; height: 100vh; box-shadow: none; border: 0; }
+      .tools, .editor { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="board">
+    <header class="top">
+      <div class="dhl">DHL</div>
+      <h1 id="titulo"></h1>
+      <nav class="view-tabs" aria-label="Modo de ordenação">
+        <button class="active" type="button" data-view="alfabetica">Ordem alfabética</button>
+        <button type="button" data-view="performance">Performance</button>
+        <button type="button" data-view="volumoso">Performance volumoso</button>
+        <button type="button" data-view="gestor">Performance por gestor</button>
+        <button type="button" data-view="hora">Gestão hora a hora</button>
+      </nav>
+    </header>
+
+    <section class="table-wrap">
+      <table aria-label="Ranking por pacotes por minuto">
+        <thead>
+          <tr>
+            <th id="positionHeader">Ordem</th>
+            <th>Representante</th>
+            <th>Pacotes / Minutos</th>
+            <th>Tempo Efetivo</th>
+            <th>Unidades</th>
+            <th class="extra-hour"></th>
+            <th class="extra-hour"></th>
+            <th class="extra-hour"></th>
+          </tr>
+        </thead>
+        <tbody id="rankingBody"></tbody>
+      </table>
+    </section>
+  </main>
+
+  <div class="tools">
+    <button id="editBtn" type="button">Editar dados</button>
+    <button id="printBtn" type="button">PDF</button>
+  </div>
+
+  <aside class="editor" id="editor" aria-label="Editor do ranking">
+    <header>
+      <h2>Editar ranking</h2>
+      <button class="close" id="closeBtn" type="button" aria-label="Fechar">×</button>
+    </header>
+    <div class="editor-body">
+      <p class="paste-help">Escolha a hora, cole Nomes, Tempo efetivo e Unidades, e clique em Aplicar dados. Todas as abas usam a mesma base; a Gestão hora a hora guarda cada coluna lançada para 05h, 06h, 07h e 08h.</p>
+      <div class="paste-grid">
+        <div class="paste-field">
+          <label for="pasteNames">Nomes</label>
+          <textarea id="pasteNames" spellcheck="false"></textarea>
+        </div>
+        <div class="paste-field">
+          <label for="pasteTimes">Tempo efetivo</label>
+          <textarea id="pasteTimes" spellcheck="false"></textarea>
+        </div>
+        <div class="paste-field">
+          <label for="pasteUnits">Unidades</label>
+          <textarea id="pasteUnits" spellcheck="false"></textarea>
+        </div>
+        <div class="paste-field">
+          <label for="pasteManagers">Cadastro gestor</label>
+          <textarea id="pasteManagers" spellcheck="false" placeholder="Cole Nome[TAB]Gestor ou uma tabela completa com as colunas Representantes e Gestor"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="editor-actions">
+      <button class="secondary" id="resetBtn" type="button">Exemplo</button>
+      <select class="hour-select" id="hourSlot" aria-label="Hora do lançamento">
+        <option value="h1">05h</option>
+        <option value="h2">06h</option>
+        <option value="h3">07h</option>
+        <option value="h4">08h</option>
+      </select>
+      <button class="primary" id="applyHourlyBtn" type="button">Aplicar dados</button>
+      <button class="secondary" id="applyBtn" type="button">Aplicar fechamento</button>
+      <button class="danger" id="clearHourBtn" type="button">Limpar hora</button>
+      <button class="danger" id="clearHourlyBtn" type="button">Limpar hora a hora</button>
+      <button class="danger" id="clearFinalBtn" type="button">Limpar fechamento</button>
+      <button class="danger" id="clearAllBtn" type="button">Limpar tudo</button>
+    </div>
+  </aside>
+
+  <script src="ranking-dados.js"></script>
+  <script>
+    const br = new Intl.NumberFormat("pt-BR");
+    const dec = new Intl.NumberFormat("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const storageKey = "ranking-pacotes-dados";
+    const originalData = JSON.parse(JSON.stringify(window.RANKING_DADOS));
+    let currentData = JSON.parse(localStorage.getItem(storageKey) || JSON.stringify(originalData));
+    currentData.gestores = currentData.gestores || {};
+    currentData.horas = currentData.horas || {};
+    currentData.horaLinhas = currentData.horaLinhas || [];
+    currentData.criterioVerde = 4.5;
+    currentData.criterioAmarelo = 4.0;
+    let currentView = "alfabetica";
+
+    function parseNumber(value) {
+      if (typeof value === "number") return value;
+      return Number(String(value || "0").replace(/\./g, "").replace(",", "."));
+    }
+
+    function timeToMinutes(time) {
+      const parts = String(time || "").trim().split(":").map(Number);
+      if (parts.some(Number.isNaN)) return 0;
+      if (parts.length === 3) return (parts[0] * 60) + parts[1] + (parts[2] / 60);
+      if (parts.length === 2) return parts[0] + (parts[1] / 60);
+      return Number(parts[0] || 0);
+    }
+
+    function pacotesPorMinuto(row) {
+      const minutes = timeToMinutes(row.tempoEfetivo);
+      return minutes ? Number(row.unidades || 0) / minutes : 0;
+    }
+
+    function operationalRows(data) {
+      const rowsByKey = {};
+      (data.horaLinhas || []).forEach(row => {
+        const key = normalizeName(row.representante);
+        if (key) rowsByKey[key] = { ...row };
+      });
+      Object.keys(data.horas || {}).forEach(key => {
+        rowsByKey[key] = rowsByKey[key] || { representante: key };
+      });
+      if (!Object.keys(rowsByKey).length) {
+        (data.linhas || []).forEach(row => {
+          const key = normalizeName(row.representante);
+          if (key) rowsByKey[key] = { representante: row.representante, gestor: gestorFor(row, data) };
+        });
+      }
+      return Object.values(rowsByKey).map(row => ({
+        ...row,
+        gestor: gestorFor(row, data)
+      }));
+    }
+
+    function normalizeName(name) {
+      return String(name || "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/\s+/g, " ")
+        .trim()
+        .toUpperCase();
+    }
+
+    function gestorFor(row, data) {
+      const key = normalizeName(row.representante);
+      return (data.gestores || {})[key] || row.gestor || "";
+    }
+
+    function splitManagerColumns(line) {
+      const tabParts = String(line || "").split("\t").map(part => part.trim()).filter(Boolean);
+      if (tabParts.length >= 2) return tabParts;
+      const semicolonParts = String(line || "").split(";").map(part => part.trim()).filter(Boolean);
+      if (semicolonParts.length >= 2) return semicolonParts;
+      const commaParts = String(line || "").split(",").map(part => part.trim()).filter(Boolean);
+      if (commaParts.length >= 2) return commaParts;
+      return String(line || "").split(/\s{2,}/).map(part => part.trim()).filter(Boolean);
+    }
+
+    function splitManagerLine(line) {
+      const parts = splitManagerColumns(line);
+      if (parts.length >= 2) return parts;
+      const match = String(line || "").trim().match(/^(.+?)\s+([A-ZÀ-Ú]{3,}(?:\s+[A-ZÀ-Ú]{3,})*)$/);
+      if (match) return [match[1].trim(), match[2].trim()];
+      return parts;
+    }
+
+    function detectColumnIndex(headers, candidates) {
+      return headers.findIndex(header => {
+        const normalized = normalizeName(header);
+        return candidates.some(candidate => normalized.includes(candidate));
+      });
+    }
+
+    function metricClass(value, data, mode = currentView) {
+      if (mode === "volumoso") {
+        if (value >= 2) return "green";
+        if (value >= 1.5) return "amber";
+        return "danger";
+      }
+      if (value >= 4.5) return "green";
+      if (value >= 4.0) return "amber";
+      return "danger";
+    }
+
+    function metricBackground(value, data, mode = currentView) {
+      if (!value) return "rgba(255, 249, 214, .68)";
+      const tone = metricClass(value, data, mode);
+      if (tone === "green") return "linear-gradient(90deg, #8dcc83, #b8e5ad)";
+      if (tone === "amber") return "linear-gradient(90deg, #fff065, #ffe43d)";
+      return "linear-gradient(90deg, #ff3232, #ff5555)";
+    }
+
+    function actionFor(value, reference = 4.5) {
+      if (!value) return "Sem dados";
+      if (value >= reference) return "Manter ritmo";
+      if (value >= 4.0) return "Acompanhar";
+      return "Atuar agora";
+    }
+
+    function medal(position) {
+      if (position === 1) return '<span class="medal gold">1</span>';
+      if (position === 2) return '<span class="medal silver">2</span>';
+      if (position === 3) return '<span class="medal bronze">3</span>';
+      return String(position);
+    }
+
+    function performanceRows(data) {
+      return [...data.linhas].sort((a, b) => pacotesPorMinuto(b) - pacotesPorMinuto(a));
+    }
+
+    function alphaRows(data) {
+      return [...data.linhas].sort((a, b) => String(a.representante || "").localeCompare(String(b.representante || ""), "pt-BR", { sensitivity: "base" }));
+    }
+
+    function gestorRows(data) {
+      return operationalRows(data).sort((a, b) => {
+        const gestorA = gestorFor(a, data) || "ZZZ SEM GESTOR";
+        const gestorB = gestorFor(b, data) || "ZZZ SEM GESTOR";
+        const gestorCompare = gestorA.localeCompare(gestorB, "pt-BR", { sensitivity: "base" });
+        if (gestorCompare) return gestorCompare;
+        const performanceCompare = operationalPpm(b, data) - operationalPpm(a, data);
+        if (performanceCompare) return performanceCompare;
+        return String(a.representante || "").localeCompare(String(b.representante || ""), "pt-BR", { sensitivity: "base" });
+      });
+    }
+
+    function hourDataFor(row, data) {
+      return (data.horas || {})[normalizeName(row.representante)] || row.horas || {};
+    }
+
+    function hourEntry(value) {
+      if (value && typeof value === "object") {
+        const unidades = Number(value.unidades || value.units || 0);
+        const tempoEfetivo = value.tempoEfetivo || value.tempo || "";
+        const minutos = timeToMinutes(tempoEfetivo);
+        return {
+          unidades,
+          tempoEfetivo,
+          minutos: minutos || (unidades ? 60 : 0)
+        };
+      }
+      const unidades = Number(value || 0);
+      return {
+        unidades,
+        tempoEfetivo: unidades ? "01:00:00" : "",
+        minutos: unidades ? 60 : 0
+      };
+    }
+
+    function hourPpm(value) {
+      const entry = hourEntry(value);
+      return entry.minutos ? entry.unidades / entry.minutos : 0;
+    }
+
+    function hourLabel(value) {
+      const entry = hourEntry(value);
+      return entry.unidades ? dec.format(hourPpm(value)) : "-";
+    }
+
+    function hourAverage(row, data) {
+      const hours = hourDataFor(row, data);
+      const values = [hours.h1, hours.h2, hours.h3, hours.h4].map(hourEntry).filter(entry => entry.unidades > 0 && entry.minutos > 0);
+      const totalUnits = values.reduce((sum, entry) => sum + entry.unidades, 0);
+      const totalMinutes = values.reduce((sum, entry) => sum + entry.minutos, 0);
+      return totalMinutes ? totalUnits / totalMinutes : 0;
+    }
+
+    function hourUnits(row, data) {
+      const hours = hourDataFor(row, data);
+      return [hours.h1, hours.h2, hours.h3, hours.h4].map(hourEntry).reduce((sum, entry) => sum + entry.unidades, 0);
+    }
+
+    function hourCount(row, data) {
+      const hours = hourDataFor(row, data);
+      return [hours.h1, hours.h2, hours.h3, hours.h4].map(hourEntry).filter(entry => entry.unidades > 0).length;
+    }
+
+    function hourMinutes(row, data) {
+      const hours = hourDataFor(row, data);
+      return [hours.h1, hours.h2, hours.h3, hours.h4].map(hourEntry).reduce((sum, entry) => sum + entry.minutos, 0);
+    }
+
+    function minutesToTime(minutes) {
+      if (!minutes) return "";
+      const totalSeconds = Math.round(minutes * 60);
+      const h = Math.floor(totalSeconds / 3600);
+      const m = Math.floor((totalSeconds % 3600) / 60);
+      const s = totalSeconds % 60;
+      return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+    }
+
+    function operationalPpm(row, data) {
+      const average = hourAverage(row, data);
+      return average || pacotesPorMinuto(row);
+    }
+
+    function operationalTempo(row, data) {
+      const minutes = hourMinutes(row, data);
+      return minutes ? minutesToTime(minutes) : row.tempoEfetivo || "";
+    }
+
+    function operationalUnits(row, data) {
+      const units = hourUnits(row, data);
+      return units || Number(row.unidades || 0);
+    }
+
+    function aggregateLinesFromHours(data) {
+      return operationalRows(data)
+        .filter(row => hourCount(row, data) > 0)
+        .map(row => ({
+          representante: row.representante,
+          tempoEfetivo: operationalTempo(row, data),
+          unidades: operationalUnits(row, data),
+          gestor: gestorFor(row, data),
+          horas: hourDataFor(row, data)
+        }));
+    }
+
+    function syncFinalTabsFromHours(data) {
+      const aggregate = aggregateLinesFromHours(data);
+      if (aggregate.length) data.linhas = aggregate;
+      return data;
+    }
+
+    function horaRows(data) {
+      return operationalRows(data).sort((a, b) => {
+        const gestorA = gestorFor(a, data) || "ZZZ SEM GESTOR";
+        const gestorB = gestorFor(b, data) || "ZZZ SEM GESTOR";
+        const gestorCompare = gestorA.localeCompare(gestorB, "pt-BR", { sensitivity: "base" });
+        if (gestorCompare) return gestorCompare;
+        const averageCompare = hourAverage(b, data) - hourAverage(a, data);
+        if (averageCompare) return averageCompare;
+        return String(a.representante || "").localeCompare(String(b.representante || ""), "pt-BR", { sensitivity: "base" });
+      });
+    }
+
+    function viewRows(data) {
+      if (currentView === "performance" || currentView === "volumoso") return performanceRows(data);
+      if (currentView === "gestor") return gestorRows(data);
+      if (currentView === "hora") return horaRows(data);
+      return alphaRows(data);
+    }
+
+    function renderHoraRows(tbody, data) {
+      let currentGroup = "";
+      viewRows(data).forEach(row => {
+        const gestor = gestorFor(row, data) || "SEM GESTOR";
+        if (gestor !== currentGroup) {
+          currentGroup = gestor;
+          const groupRows = operationalRows(data).filter(item => (gestorFor(item, data) || "SEM GESTOR") === gestor);
+          const averages = groupRows.map(item => hourAverage(item, data)).filter(Boolean);
+          const media = averages.length ? averages.reduce((sum, value) => sum + value, 0) / averages.length : 0;
+          const critical = averages.filter(value => value < 4.5).length;
+          const groupTr = document.createElement("tr");
+          groupTr.className = "group-row";
+          groupTr.innerHTML = `<td colspan="8">${gestor} &nbsp; | &nbsp; Equipe: ${groupRows.length} &nbsp; | &nbsp; Média: ${media ? dec.format(media) : "-"} &nbsp; | &nbsp; Abaixo da meta: ${critical}</td>`;
+          tbody.appendChild(groupTr);
+        }
+        const hours = hourDataFor(row, data);
+        const average = hourAverage(row, data);
+        const actionRows = operationalRows(data).filter(item => (gestorFor(item, data) || "SEM GESTOR") === gestor);
+        const actionAverages = actionRows.map(item => hourAverage(item, data)).filter(Boolean);
+        const actionReference = actionAverages.length ? actionAverages.reduce((sum, value) => sum + value, 0) / actionAverages.length : 4.5;
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td class="gestor">${gestor}</td>
+          <td class="name">${row.representante}</td>
+          <td class="metric-cell" style="background:${metricBackground(hourPpm(hours.h1), data)}">${hourLabel(hours.h1)}</td>
+          <td class="metric-cell" style="background:${metricBackground(hourPpm(hours.h2), data)}">${hourLabel(hours.h2)}</td>
+          <td class="metric-cell" style="background:${metricBackground(hourPpm(hours.h3), data)}">${hourLabel(hours.h3)}</td>
+          <td class="metric-cell" style="background:${metricBackground(hourPpm(hours.h4), data)}">${hourLabel(hours.h4)}</td>
+          <td class="metric-cell" style="background:${metricBackground(average, data)}">${average ? dec.format(average) : "-"}</td>
+          <td class="action">${actionFor(average, Math.max(actionReference, 4.5))}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderTabs() {
+      document.querySelectorAll("[data-view]").forEach(button => {
+        button.classList.toggle("active", button.dataset.view === currentView);
+      });
+    }
+
+    function render(data) {
+      renderTabs();
+      document.querySelector(".board").classList.toggle("gestor-view", currentView === "gestor");
+      document.querySelector(".board").classList.toggle("hora-view", currentView === "hora");
+      document.getElementById("titulo").textContent = currentView === "performance"
+        ? (data.tituloPerformance || data.titulo || "TOP POR PACOTES/MINUTOS")
+        : currentView === "volumoso"
+          ? (data.tituloVolumoso || "PERFORMANCE VOLUMOSO")
+        : currentView === "gestor"
+          ? (data.tituloGestor || "PERFORMANCE POR GESTOR")
+        : currentView === "hora"
+          ? (data.tituloHora || "GESTÃO HORA A HORA")
+        : (data.tituloAlfabetico || "PRODUTIVIDADE AM");
+      const headers = document.querySelectorAll("thead th");
+      if (currentView === "hora") {
+        headers[0].textContent = "Gestor";
+        headers[1].textContent = "Representante";
+        headers[2].textContent = "05h";
+        headers[3].textContent = "06h";
+        headers[4].textContent = "07h";
+        headers[5].textContent = "08h";
+        headers[6].textContent = "Média";
+        headers[7].textContent = "Ação";
+      } else if (currentView === "gestor") {
+        headers[0].textContent = "Representantes";
+        headers[1].textContent = "Pacotes / Minutos";
+        headers[2].textContent = "Tempo efetivo";
+        headers[3].textContent = "Unidades";
+        headers[4].textContent = "Gestor";
+        headers[5].textContent = "";
+        headers[6].textContent = "";
+        headers[7].textContent = "";
+      } else {
+        headers[0].textContent = (currentView === "performance" || currentView === "volumoso") ? "Posição" : "Ordem";
+        headers[1].textContent = "Representante";
+        headers[2].textContent = "Pacotes / Minutos";
+        headers[3].textContent = "Tempo Efetivo";
+        headers[4].textContent = "Unidades";
+        headers[5].textContent = "";
+        headers[6].textContent = "";
+        headers[7].textContent = "";
+      }
+      const tbody = document.getElementById("rankingBody");
+      tbody.innerHTML = "";
+      if (currentView === "hora") {
+        renderHoraRows(tbody, data);
+        return;
+      }
+      viewRows(data).forEach((row, index) => {
+        const position = index + 1;
+        const tr = document.createElement("tr");
+        if ((currentView === "performance" || currentView === "volumoso") && position <= 3) tr.className = "top-three";
+        const value = currentView === "gestor" ? operationalPpm(row, data) : pacotesPorMinuto(row);
+        const metricBg = (currentView === "performance" || currentView === "volumoso")
+          ? metricBackground(value, data, currentView)
+          : currentView === "gestor"
+            ? metricBackground(value, data)
+          : "linear-gradient(90deg, #b9e6b2, #d7f0cc)";
+        tr.innerHTML = currentView === "gestor" ? `
+          <td class="name">${row.representante}</td>
+          <td class="metric-cell" style="background:${metricBg}">${dec.format(operationalPpm(row, data))}</td>
+          <td>${operationalTempo(row, data)}</td>
+          <td class="units">${br.format(operationalUnits(row, data))}</td>
+          <td class="gestor">${gestorFor(row, data) || "SEM GESTOR"}</td>
+        ` : `
+          <td class="pos">${(currentView === "performance" || currentView === "volumoso") ? medal(position) : position}</td>
+          <td class="name">${row.representante}</td>
+          <td class="metric-cell" style="background:${metricBg}">${dec.format(value)}</td>
+          <td>${row.tempoEfetivo}</td>
+          <td class="units">${br.format(Number(row.unidades || 0))}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function populateEditor(data) {
+      const knownRows = [...alphaRows(data), ...operationalRows(data)]
+        .filter((row, index, rows) => {
+          const key = normalizeName(row.representante);
+          return key && rows.findIndex(item => normalizeName(item.representante) === key) === index;
+        })
+        .sort((a, b) => String(a.representante || "").localeCompare(String(b.representante || ""), "pt-BR", { sensitivity: "base" }));
+      document.getElementById("pasteNames").value = "";
+      document.getElementById("pasteTimes").value = "";
+      document.getElementById("pasteUnits").value = "";
+      const managerRows = knownRows
+        .map(row => ({ nome: row.representante || "", gestor: gestorFor(row, data) }))
+        .filter(row => row.nome || row.gestor);
+      document.getElementById("pasteManagers").value = managerRows
+        .map(row => `${row.nome}\t${row.gestor || ""}`)
+        .join("\n");
+    }
+
+    function linesFromTextarea(id) {
+      return document.getElementById(id).value.split(/\r?\n/).map(line => line.trim());
+    }
+
+    function readManagers() {
+      const managers = { ...(currentData.gestores || {}) };
+      const rows = linesFromTextarea("pasteManagers").filter(Boolean).map(splitManagerLine);
+      if (!rows.length) return managers;
+      let bodyRows = rows;
+      let nameIndex = 0;
+      let managerIndex = 1;
+      const firstRow = rows[0].map(normalizeName);
+      const hasHeader = firstRow.some(cell => cell.includes("REPRESENT")) && firstRow.some(cell => cell.includes("GESTOR"));
+      if (hasHeader) {
+        nameIndex = detectColumnIndex(rows[0], ["REPRESENT", "NOME"]);
+        managerIndex = detectColumnIndex(rows[0], ["GESTOR"]);
+        bodyRows = rows.slice(1);
+      } else if (rows[0].length >= 5) {
+        nameIndex = 0;
+        managerIndex = rows[0].length - 1;
+      }
+      bodyRows.forEach(parts => {
+        const nome = parts[nameIndex] || "";
+        const gestor = parts[managerIndex] || parts.slice(1).join(" ").trim();
+        const key = normalizeName(nome);
+        if (key && gestor) managers[key] = gestor.toUpperCase();
+      });
+      return managers;
+    }
+
+    function selectedHourSlot() {
+      return document.getElementById("hourSlot").value || "h1";
+    }
+
+    function readSimpleHourlyBatch(existingHours, existingRows, managers) {
+      const hoursByName = { ...existingHours };
+      const rowsByKey = {};
+      (existingRows || []).forEach(row => {
+        const key = normalizeName(row.representante);
+        if (key) rowsByKey[key] = { ...row };
+      });
+      const names = linesFromTextarea("pasteNames");
+      const times = linesFromTextarea("pasteTimes");
+      const units = linesFromTextarea("pasteUnits");
+      const maxRows = Math.max(names.length, times.length, units.length);
+      const slot = selectedHourSlot();
+      for (let index = 0; index < maxRows; index++) {
+        const representante = names[index] || "";
+        const tempoEfetivo = times[index] || "";
+        const unidades = parseNumber(units[index] || 0);
+        const key = normalizeName(representante);
+        if (!key || (!tempoEfetivo && !unidades)) continue;
+        const previous = hoursByName[key] || {};
+        hoursByName[key] = {
+          ...previous,
+          [slot]: {
+            unidades,
+            tempoEfetivo: tempoEfetivo || "01:00:00"
+          }
+        };
+        rowsByKey[key] = {
+          representante,
+          gestor: managers[key] || rowsByKey[key]?.gestor || ""
+        };
+      }
+      return {
+        horas: hoursByName,
+        horaLinhas: Object.values(rowsByKey)
+      };
+    }
+
+    function applyHourlyData(base) {
+      const next = JSON.parse(JSON.stringify(base));
+      next.gestores = readManagers();
+      const simpleBatch = readSimpleHourlyBatch(next.horas || {}, next.horaLinhas || [], next.gestores);
+      next.horas = simpleBatch.horas;
+      next.horaLinhas = simpleBatch.horaLinhas.map(row => ({
+        ...row,
+        gestor: next.gestores[normalizeName(row.representante)] || row.gestor || ""
+      }));
+      next.criterioVerde = 4.5;
+      next.criterioAmarelo = 4.0;
+      return syncFinalTabsFromHours(next);
+    }
+
+    function readEditor(base) {
+      const next = JSON.parse(JSON.stringify(base));
+      next.criterioVerde = 4.5;
+      next.criterioAmarelo = 4.0;
+      const names = linesFromTextarea("pasteNames");
+      const times = linesFromTextarea("pasteTimes");
+      const units = linesFromTextarea("pasteUnits");
+      const maxRows = Math.max(names.length, times.length, units.length);
+      next.linhas = [];
+      next.gestores = readManagers();
+      for (let index = 0; index < maxRows; index++) {
+        const representante = names[index] || "";
+        const tempoEfetivo = times[index] || "";
+        const unidades = parseNumber(units[index] || 0);
+        if (!representante && !tempoEfetivo && !unidades) continue;
+        next.linhas.push({
+          representante,
+          tempoEfetivo,
+          unidades,
+          gestor: next.gestores[normalizeName(representante)] || "",
+          horas: next.horas[normalizeName(representante)] || {}
+        });
+      }
+      next.horaLinhas = next.horaLinhas.map(row => ({
+        ...row,
+        gestor: next.gestores[normalizeName(row.representante)] || row.gestor || ""
+      }));
+      return next;
+    }
+
+    function removeEmptyHourRows(data) {
+      data.horaLinhas = (data.horaLinhas || []).filter(row => hourCount(row, data) > 0);
+      return data;
+    }
+
+    function clearSelectedHour(base) {
+      const next = JSON.parse(JSON.stringify(base));
+      const slot = selectedHourSlot();
+      Object.keys(next.horas || {}).forEach(key => {
+        if (next.horas[key]) delete next.horas[key][slot];
+      });
+      removeEmptyHourRows(next);
+      next.linhas = aggregateLinesFromHours(next);
+      return next;
+    }
+
+    function clearHourlyData(base) {
+      const next = JSON.parse(JSON.stringify(base));
+      next.horas = {};
+      next.horaLinhas = [];
+      next.linhas = [];
+      return next;
+    }
+
+    function clearFinalData(base) {
+      const next = JSON.parse(JSON.stringify(base));
+      next.linhas = [];
+      return next;
+    }
+
+    function clearAllData() {
+      const next = JSON.parse(JSON.stringify(originalData));
+      next.linhas = [];
+      next.horas = {};
+      next.horaLinhas = [];
+      next.gestores = currentData.gestores || {};
+      return next;
+    }
+
+    function saveRenderAndPopulate(data) {
+      currentData = data;
+      localStorage.setItem(storageKey, JSON.stringify(currentData));
+      populateEditor(currentData);
+      render(currentData);
+    }
+
+    const editor = document.getElementById("editor");
+    document.getElementById("editBtn").addEventListener("click", () => {
+      populateEditor(currentData);
+      editor.classList.add("open");
+    });
+    document.getElementById("closeBtn").addEventListener("click", () => editor.classList.remove("open"));
+    document.getElementById("applyBtn").addEventListener("click", () => {
+      currentData = readEditor(currentData);
+      localStorage.setItem(storageKey, JSON.stringify(currentData));
+      render(currentData);
+      editor.classList.remove("open");
+    });
+    document.getElementById("applyHourlyBtn").addEventListener("click", () => {
+      currentData = applyHourlyData(currentData);
+      localStorage.setItem(storageKey, JSON.stringify(currentData));
+      currentView = "hora";
+      render(currentData);
+      editor.classList.remove("open");
+    });
+    document.getElementById("clearHourBtn").addEventListener("click", () => {
+      currentView = "hora";
+      saveRenderAndPopulate(clearSelectedHour(currentData));
+    });
+    document.getElementById("clearHourlyBtn").addEventListener("click", () => {
+      currentView = "hora";
+      saveRenderAndPopulate(clearHourlyData(currentData));
+    });
+    document.getElementById("clearFinalBtn").addEventListener("click", () => {
+      saveRenderAndPopulate(clearFinalData(currentData));
+    });
+    document.getElementById("clearAllBtn").addEventListener("click", () => {
+      currentView = "alfabetica";
+      currentData = clearAllData();
+      localStorage.setItem(storageKey, JSON.stringify(currentData));
+      populateEditor(currentData);
+      render(currentData);
+    });
+    document.getElementById("resetBtn").addEventListener("click", () => {
+      currentData = JSON.parse(JSON.stringify(originalData));
+      localStorage.removeItem(storageKey);
+      populateEditor(currentData);
+      render(currentData);
+    });
+    document.querySelectorAll("[data-view]").forEach(button => {
+      button.addEventListener("click", () => {
+        currentView = button.dataset.view;
+        render(currentData);
+      });
+    });
+    document.getElementById("printBtn").addEventListener("click", () => window.print());
+
+    render(currentData);
+  </script>
+</body>
+</html>
