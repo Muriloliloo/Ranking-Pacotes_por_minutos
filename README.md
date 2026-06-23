@@ -2,26 +2,7 @@
 
 Painel web para ranking de produtividade por pacotes/minutos, com abas de ordem alfabetica, performance, performance volumoso, performance por gestor e gestao hora a hora.
 
-## Como Publicar no GitHub Pages
-
-1. Crie um repositorio no GitHub.
-2. Envie todos os arquivos desta pasta para o repositorio.
-3. No GitHub, entre em **Settings > Pages**.
-4. Em **Build and deployment**, selecione:
-   - Source: **Deploy from a branch**
-   - Branch: **main**
-   - Folder: **/root**
-5. Clique em **Save**.
-6. Aguarde alguns minutos ate o GitHub gerar o link do site.
-
-O link ficara parecido com:
-
-`https://seu-usuario.github.io/nome-do-repositorio/`
-
 ## Arquivos Principais
-
-- `index.html`: painel principal. No GitHub Pages precisa ter esse nome.
-- `ranking-dados.js`: dados iniciais do painel.
 
 ## Importante
 
