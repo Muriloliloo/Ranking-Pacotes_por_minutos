@@ -765,20 +765,31 @@
       transform: none;
     }
 
-    .hero-location {
-      display: inline-flex;
-      align-items: center;
+    .hero-title-row {
+      display: flex;
+      align-items: baseline;
       justify-content: center;
-      padding: 4px 17px 5px;
-      min-height: 24px;
-      color: #0a3964;
-      background: rgba(255, 255, 255, .47);
-      border: 1px solid rgba(10, 65, 123, .26);
-      border-radius: 99px;
-      box-shadow: 0 2px 5px rgba(17, 54, 100, .07);
-      font: 900 clamp(11px, .87vw, 15px)/1.2 "Manrope", "Segoe UI", sans-serif;
-      letter-spacing: .21em;
+      gap: clamp(9px, 1.1vw, 20px);
+      max-width: 100%;
+      min-width: 0;
       white-space: nowrap;
+    }
+
+    .hero-title-site {
+      color: #d40511;
+      font-family: "Montserrat", "Manrope", "Segoe UI", sans-serif;
+      font-weight: 900;
+      font-size: clamp(20px, 2.05vw, 38px);
+      line-height: 1.08;
+      letter-spacing: .027em;
+      text-transform: uppercase;
+      text-shadow: 1px 2px 0 rgba(13, 60, 125, .35), 2px 5px 8px rgba(5, 42, 111, .24);
+    }
+
+    .board:has([data-view="volumoso"].active) .top #titulo,
+    .board:has([data-view="gestor"].active) .top #titulo,
+    .board:has([data-view="performance"].active) .top #titulo {
+      font-size: clamp(25px, 2.6vw, 49px);
     }
 
     .hero-right {
@@ -862,7 +873,9 @@
       .brand-dhl { width: 115px; }
       .brand-ml-icon { width: 40px; }
       .brand-ml-wordmark { font-size: 14px; }
-      .top #titulo { font-size: clamp(30px, 3.6vw, 45px); }
+      .top #titulo { font-size: clamp(25px, 3.05vw, 41px); }
+      .hero-title-site { font-size: clamp(17px, 2vw, 29px); }
+      .hero-title-row { gap: 9px; }
     }
 
     @media (max-width: 760px) {
@@ -891,7 +904,13 @@
         white-space: normal;
         text-wrap: balance;
       }
-      .hero-location { padding: 4px 13px; min-height: 21px; font-size: 10px; }
+      .hero-title-row { gap: 7px; max-width: 100%; }
+      .hero-title-site { font-size: clamp(13px, 3.15vw, 21px); }
+      .board:has([data-view="volumoso"].active) .top #titulo,
+      .board:has([data-view="gestor"].active) .top #titulo,
+      .board:has([data-view="performance"].active) .top #titulo {
+        font-size: clamp(20px, 4.2vw, 31px);
+      }
       .top .view-tabs { justify-self: stretch; width: 100%; overflow-x: auto; }
       .top .view-tabs button,
       .board.hora-view .top .view-tabs button {
@@ -902,7 +921,9 @@
     }
     @media (max-width: 480px) {
       .board, .board.hora-view { grid-template-rows: 232px minmax(0, 1fr); }
-      .top #titulo { font-size: clamp(25px, 6.2vw, 32px); }
+      .top #titulo { font-size: clamp(20px, 5.1vw, 28px); }
+      .hero-title-site { font-size: clamp(11px, 3.05vw, 16px); }
+      .hero-title-row { gap: 5px; }
     }
     @media print {
       .board, .board.hora-view { grid-template-rows: 192px minmax(0, 1fr); }
@@ -923,12 +944,13 @@
           </div>
         </div>
         <div class="hero-heading">
-          <span class="hero-eyebrow">Performance operacional <span aria-hidden="true">•</span> Expedição</span>
-          <h1 id="titulo"></h1>
-          <span class="hero-location" aria-label="Unidade SSP15">SSP15</span>
+          <span class="hero-eyebrow">Performance operacional</span>
+          <div class="hero-title-row">
+            <h1 id="titulo"></h1>
+            <span class="hero-title-site">SSP15</span>
+          </div>
         </div>
-        <div class="hero-right" aria-label="Operação, turno AM">
-          <span class="hero-unit">EXPEDIÇÃO</span>
+        <div class="hero-right" aria-label="Turno AM">
           <span class="hero-shift">Turno AM</span>
         </div>
       </div>
