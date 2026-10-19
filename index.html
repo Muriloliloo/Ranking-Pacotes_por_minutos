@@ -6,7 +6,7 @@
   <title>Top por Pacotes/Minutos</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
       --yellow: #ffd200;
@@ -644,7 +644,7 @@
     /* Repaginação do cabeçalho: logos vetoriais, tipografia e visual de painel executivo. */
     .board,
     .board.hora-view {
-      grid-template-rows: clamp(158px, 16.6dvh, 192px) minmax(0, 1fr);
+      grid-template-rows: clamp(187px, 23.2dvh, 222px) minmax(0, 1fr);
     }
 
     .top {
@@ -653,8 +653,8 @@
       display: grid;
       grid-template-rows: minmax(0, 1fr) auto;
       align-content: stretch;
-      gap: clamp(6px, .85dvh, 11px);
-      padding: clamp(10px, 1.2dvh, 16px) clamp(12px, 1.5vw, 29px) clamp(9px, 1dvh, 13px);
+      gap: clamp(8px, 1dvh, 12px);
+      padding: clamp(13px, 1.8dvh, 20px) clamp(12px, 1.5vw, 29px) clamp(11px, 1.3dvh, 16px);
       border-bottom: 3px solid rgba(212, 5, 17, .76);
       background:
         radial-gradient(ellipse at 49% -25%, rgba(255,255,255,.88), transparent 56%),
@@ -677,9 +677,9 @@
       min-width: 0;
       min-height: 0;
       display: grid;
-      grid-template-columns: minmax(310px, 1fr) minmax(0, 1.9fr) minmax(115px, .75fr);
+      grid-template-columns: minmax(290px, .8fr) minmax(0, 2.28fr) minmax(100px, .38fr);
       align-items: center;
-      gap: clamp(7px, .9vw, 20px);
+      gap: clamp(8px, 1vw, 20px);
     }
 
     .brand-pair {
@@ -738,14 +738,14 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 1px;
+      gap: clamp(7px, 1dvh, 12px);
       text-align: center;
     }
 
     .hero-eyebrow {
       color: #6e4304;
-      font: 800 clamp(9px, .73vw, 12px)/1.2 "Manrope", "Segoe UI", sans-serif;
-      letter-spacing: .19em;
+      font: 800 clamp(10px, .8vw, 13px)/1.3 "Manrope", "Segoe UI", sans-serif;
+      letter-spacing: .22em;
       text-transform: uppercase;
       white-space: nowrap;
     }
@@ -754,23 +754,31 @@
       margin: 0;
       max-width: 100%;
       color: #d40511;
-      font-family: "Barlow Condensed", Impact, "Arial Narrow", sans-serif;
-      font-size: clamp(33px, 3.25vw, 60px);
+      font-family: "Montserrat", "Manrope", "Segoe UI", sans-serif;
+      font-size: clamp(38px, 3.65vw, 69px);
       font-weight: 900;
-      line-height: .99;
-      letter-spacing: .036em;
+      line-height: 1.08;
+      letter-spacing: .026em;
       white-space: nowrap;
       text-transform: uppercase;
-      text-shadow: 2px 3px 0 rgba(11, 62, 132, .75), 4px 7px 13px rgba(5, 30, 83, .32);
+      text-shadow: 1px 2px 0 rgba(13, 60, 125, .35), 2px 5px 8px rgba(5, 42, 111, .24);
       transform: none;
     }
 
-    .hero-underline {
-      width: clamp(86px, 9vw, 155px);
-      height: 4px;
-      margin-top: 6px;
+    .hero-location {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px 17px 5px;
+      min-height: 24px;
+      color: #0a3964;
+      background: rgba(255, 255, 255, .47);
+      border: 1px solid rgba(10, 65, 123, .26);
       border-radius: 99px;
-      background: linear-gradient(90deg, transparent, #d40511 17%, #d40511 83%, transparent);
+      box-shadow: 0 2px 5px rgba(17, 54, 100, .07);
+      font: 900 clamp(11px, .87vw, 15px)/1.2 "Manrope", "Segoe UI", sans-serif;
+      letter-spacing: .21em;
+      white-space: nowrap;
     }
 
     .hero-right {
@@ -854,35 +862,36 @@
       .brand-dhl { width: 115px; }
       .brand-ml-icon { width: 40px; }
       .brand-ml-wordmark { font-size: 14px; }
-      .top #titulo { font-size: clamp(27px, 3.15vw, 42px); }
+      .top #titulo { font-size: clamp(30px, 3.6vw, 45px); }
     }
 
     @media (max-width: 760px) {
-      .board, .board.hora-view { grid-template-rows: 191px minmax(0, 1fr); }
+      .board, .board.hora-view { grid-template-rows: 226px minmax(0, 1fr); }
       .top {
-        padding: 38px 7px 8px;
-        gap: 6px;
+        padding: 38px 7px 9px;
+        gap: 8px;
       }
       .top-hero {
         grid-template-columns: 1fr;
         justify-items: center;
         align-content: center;
-        gap: 6px;
+        gap: 8px;
       }
       .brand-pair { justify-self: center; padding: 5px 10px; border-radius: 10px; }
       .brand-dhl { width: 100px; height: 27px; }
       .brand-divider { height: 27px; }
       .brand-ml-icon { width: 36px; height: 28px; }
       .brand-ml-wordmark { font-size: 13px; }
-      .hero-heading { gap: 2px; }
-      .hero-eyebrow { font-size: 8px; letter-spacing: .12em; }
+      .hero-heading { gap: 6px; }
+      .hero-eyebrow { font-size: 9px; letter-spacing: .11em; white-space: normal; }
       .top #titulo {
-        font-size: clamp(25px, 6vw, 34px);
-        line-height: .94;
+        font-size: clamp(26px, 6.1vw, 37px);
+        line-height: 1.05;
+        letter-spacing: .015em;
         white-space: normal;
         text-wrap: balance;
       }
-      .hero-underline { height: 3px; margin-top: 3px; }
+      .hero-location { padding: 4px 13px; min-height: 21px; font-size: 10px; }
       .top .view-tabs { justify-self: stretch; width: 100%; overflow-x: auto; }
       .top .view-tabs button,
       .board.hora-view .top .view-tabs button {
@@ -892,11 +901,11 @@
       }
     }
     @media (max-width: 480px) {
-      .board, .board.hora-view { grid-template-rows: 195px minmax(0, 1fr); }
-      .top #titulo { font-size: clamp(24px, 6vw, 30px); }
+      .board, .board.hora-view { grid-template-rows: 232px minmax(0, 1fr); }
+      .top #titulo { font-size: clamp(25px, 6.2vw, 32px); }
     }
     @media print {
-      .board, .board.hora-view { grid-template-rows: 155px minmax(0, 1fr); }
+      .board, .board.hora-view { grid-template-rows: 192px minmax(0, 1fr); }
       .top { padding-top: 10px; }
     }
   </style>
@@ -916,10 +925,10 @@
         <div class="hero-heading">
           <span class="hero-eyebrow">Performance operacional <span aria-hidden="true">•</span> Expedição</span>
           <h1 id="titulo"></h1>
-          <span class="hero-underline" aria-hidden="true"></span>
+          <span class="hero-location" aria-label="Unidade SSP15">SSP15</span>
         </div>
-        <div class="hero-right" aria-label="Unidade SSP15, turno AM">
-          <span class="hero-unit">SSP15</span>
+        <div class="hero-right" aria-label="Operação, turno AM">
+          <span class="hero-unit">EXPEDIÇÃO</span>
           <span class="hero-shift">Turno AM</span>
         </div>
       </div>
