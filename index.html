@@ -1346,24 +1346,18 @@
       .top-photo-button { transition: none; }
     }
 
-    /* Biblioteca SSP15: dez avatares ilustrados e cores personalizáveis */
-    .avatar-library { display: grid; gap: 10px; padding: 12px; border-radius: 12px; border: 1px solid #c4d7e8; background: linear-gradient(135deg,#fffcf3,#eaf4ff); }
-    .avatar-library-heading { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 5px 10px; }
-    .avatar-library-heading strong { color: #113d5d; font: 900 13px "Montserrat",sans-serif; }
-    .avatar-library-heading span,.avatar-gallery-hint { color: #617184; font: 650 11px/1.35 "Manrope",sans-serif; }
-    .avatar-controls { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 8px; }
-    .avatar-controls label { display: grid; min-width: 0; gap: 4px; color: #173e59; font: 800 10px "Manrope",sans-serif; }
-    .avatar-controls select { width: 100%; min-width: 0; border: 1px solid #cbd5e1; border-radius: 8px; padding: 8px 5px; background: #fff; color: #173e59; font: 750 11px "Manrope",sans-serif; }
-    .avatar-controls select:focus-visible,.avatar-gallery button:focus-visible { outline: 3px solid #d40511; outline-offset: 2px; }
-    .avatar-gallery { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 8px; }
-    .avatar-gallery button { min-width: 0; padding: 7px 3px; display: grid; justify-items: center; gap: 5px; border: 2px solid #d4e0ea; border-radius: 12px; background: #fff; color: #27465d; cursor: pointer; font: 800 10px "Manrope",sans-serif; box-shadow: 0 2px 7px rgba(13,48,79,.07); transition: transform .13s,border-color .13s; }
-    .avatar-gallery button:hover { transform: translateY(-2px); border-color: #347eab; }
-    .avatar-gallery button.selected { border-color: #d40511; background: #fff2df; box-shadow: 0 0 0 2px rgba(212,5,17,.13); }
-    .avatar-gallery img { display: block; width: min(100%,79px); aspect-ratio: 1; border-radius: 50%; }
-    .avatar-gallery small { display: block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .avatar-gallery-hint { margin: 0; }
-    @media (max-width: 550px) { .avatar-controls { grid-template-columns: repeat(2,minmax(0,1fr)); } .avatar-gallery { grid-template-columns: repeat(3,minmax(0,1fr)); } }
-    @media (prefers-reduced-motion: reduce) { .avatar-gallery button { transition: none; } }
+    /* Apenas dois avatares 3D fixos: masculino e feminino. */
+    .avatar-fixed-picker { padding: 12px; display: grid; gap: 10px; border-radius: 13px; border: 1px solid rgba(14,66,105,.23); background: linear-gradient(135deg,#fffdf4,#eaf4ff); }
+    .avatar-fixed-title { color: #0b395d; font: 900 13px "Montserrat",sans-serif; }
+    .avatar-fixed-hint { margin: 0; color: #536b7a; font: 650 11px/1.45 "Manrope",sans-serif; }
+    .avatar-fixed-options { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; }
+    .avatar-fixed-choice { display: flex; align-items: center; justify-content: center; gap: 12px; min-width: 0; padding: 9px 10px; border: 2px solid #cadde8; border-radius: 12px; background: #fff; color: #173d5a; font: 900 13px "Montserrat",sans-serif; cursor: pointer; box-shadow: 0 4px 12px rgba(0,40,72,.08); transition: transform .12s ease, border-color .12s ease; }
+    .avatar-fixed-choice:hover { transform: translateY(-2px); border-color: #155a86; }
+    .avatar-fixed-choice.selected { border-color: #d40511; box-shadow: 0 0 0 3px rgba(212,5,17,.12); background: #fff4e8; }
+    .avatar-fixed-choice img { flex: none; width: clamp(67px,7vw,90px); height: clamp(67px,7vw,90px); border-radius: 50%; object-fit: cover; border: 2px solid #f3c33e; background: #ffe7a3; }
+    .avatar-fixed-choice:focus-visible { outline: 3px solid #d40511; outline-offset: 3px; }
+    @media (max-width: 530px) { .avatar-fixed-choice { flex-direction: column; font-size: 11px; gap: 5px; } .avatar-fixed-choice img { width: 70px; height: 70px; } }
+    @media (prefers-reduced-motion: reduce) { .avatar-fixed-choice { transition: none; } }
   </style>
 </head>
 <body>
@@ -1446,7 +1440,7 @@
       <p class="paste-help">Escolha a hora, cole Nomes, Tempo efetivo e Unidades, e clique em Aplicar dados. Todas as abas usam a mesma base; a Gestão hora a hora guarda cada coluna lançada para 05h, 06h, 07h e 08h.</p>
 
       <section class="photo-editor-panel" aria-label="Fotos do pódio">
-        <div class="photo-editor-heading">🎨 Personalizar colaborador <small>Foto real ou avatar ilustrado · guardados neste navegador</small></div>
+        <div class="photo-editor-heading">🎨 Personalizar colaborador <small>Foto real ou avatar 3D fixo · guardados neste navegador</small></div>
         <div class="photo-editor-controls">
           <label for="photoPerson">Colaborador</label>
           <select id="photoPerson" aria-label="Selecione o colaborador"></select>
@@ -1455,24 +1449,19 @@
           </label>
           <button type="button" id="removePhoto" class="photo-remove-button">Remover foto/avatar</button>
         </div>
-        <div class="avatar-library">
-          <div class="avatar-library-heading"><strong>🎭 Biblioteca de avatares</strong><span>Escolha o estilo que preferir</span></div>
-          <div class="avatar-controls">
-            <label>Estilo
-              <select id="avatarCategory"><option value="masculino">Masculinos</option><option value="feminino">Femininos</option></select>
-            </label>
-            <label>Tom de pele
-              <select id="avatarSkin"><option value="clara">Claro</option><option value="media" selected>Médio</option><option value="morena">Moreno</option><option value="escura">Escuro</option></select>
-            </label>
-            <label>Cor do cabelo
-              <select id="avatarHairColor"><option value="preto">Preto</option><option value="castanho">Castanho</option><option value="loiro">Loiro</option><option value="ruivo">Ruivo</option><option value="grisalho">Grisalho</option></select>
-            </label>
-            <label>Fundo
-              <select id="avatarBackground"><option value="azul">Azul</option><option value="dourado">Dourado</option><option value="lilas">Lilás</option><option value="verde">Verde</option></select>
-            </label>
+        <div class="avatar-fixed-picker">
+          <strong class="avatar-fixed-title">👤 Avatar padrão em 3D</strong>
+          <p class="avatar-fixed-hint">Selecione apenas um modelo para o colaborador. A foto real continua disponível acima.</p>
+          <div class="avatar-fixed-options" id="avatarFixedOptions" role="group" aria-label="Selecione avatar masculino ou feminino">
+            <button type="button" class="avatar-fixed-choice" data-genero="masculino" aria-pressed="false">
+              <img src="assets/avatar-masculino-3d.webp" alt="Avatar masculino 3D" width="90" height="90">
+              <span>Masculino</span>
+            </button>
+            <button type="button" class="avatar-fixed-choice" data-genero="feminino" aria-pressed="false">
+              <img src="assets/avatar-feminino-3d.webp" alt="Avatar feminino 3D" width="90" height="90">
+              <span>Feminino</span>
+            </button>
           </div>
-          <div id="avatarGallery" class="avatar-gallery" role="group" aria-label="Biblioteca de avatares"></div>
-          <p class="avatar-gallery-hint">Clique em um personagem para aplicar. Você pode mudar as cores quando quiser.</p>
         </div>
         <p class="photo-editor-status" id="photoStatus" role="status">Escolha uma foto ou um avatar para o colaborador.</p>
       </section>
@@ -1513,7 +1502,6 @@
   </aside>
 
   <script src="ranking-dados.js"></script>
-  <script src="avatar-library.js"></script>
   <script>
     const br = new Intl.NumberFormat("pt-BR");
     const dec = new Intl.NumberFormat("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -1828,14 +1816,66 @@
       return ((words[0] || "?").charAt(0) + (words.length > 1 ? words[words.length - 1].charAt(0) : "")).toUpperCase();
     }
 
+    /* Avatar 3D fixo atribuído manualmente, sem inferir gênero pelo nome. */
+    const topGenderKey = "ranking-pacotes-generos-v2";
+    const genderAssets = {
+      masculino: "assets/avatar-masculino-3d.webp",
+      feminino: "assets/avatar-feminino-3d.webp"
+    };
+    let gendersByName = (() => {
+      let saved = {};
+      try {
+        const raw = JSON.parse(localStorage.getItem(topGenderKey) || "{}");
+        if (raw && typeof raw === "object" && !Array.isArray(raw)) saved = raw;
+        const legacy = JSON.parse(localStorage.getItem("ranking-pacotes-avatares-v1") || "{}");
+        if (legacy && typeof legacy === "object") {
+          for (const [name, config] of Object.entries(legacy)) {
+            if (saved[name] || !config || typeof config.id !== "string") continue;
+            if (config.id.startsWith("m-")) saved[name] = "masculino";
+            if (config.id.startsWith("f-")) saved[name] = "feminino";
+          }
+        }
+      } catch {}
+      return saved;
+    })();
+    function renderFixedAvatarChoices() {
+      const key = document.getElementById("photoPerson").value;
+      document.querySelectorAll("#avatarFixedOptions [data-genero]").forEach(btn => {
+        const active = gendersByName[key] === btn.dataset.genero && !photosByName[key];
+        btn.classList.toggle("selected", active);
+        btn.setAttribute("aria-pressed", String(active));
+      });
+    }
+    function saveFixedAvatarChoice(gender) {
+      const key = document.getElementById("photoPerson").value;
+      if (!key || !genderAssets[gender]) { updatePhotoStatus("Selecione um colaborador."); return; }
+      const oldGender = gendersByName[key];
+      const oldPhoto = photosByName[key];
+      gendersByName[key] = gender;
+      delete photosByName[key];
+      try {
+        localStorage.setItem(topGenderKey, JSON.stringify(gendersByName));
+        localStorage.setItem(topPhotoKey, JSON.stringify(photosByName));
+        updatePhotoStatus("✅ Avatar 3D " + gender + " selecionado para este colaborador.");
+        if (currentView === "top5") renderTopPerformance(currentData);
+      } catch {
+        if (oldGender) gendersByName[key] = oldGender; else delete gendersByName[key];
+        if (oldPhoto) photosByName[key] = oldPhoto;
+        updatePhotoStatus("Não foi possível salvar o avatar neste navegador.");
+      }
+    }
+    document.getElementById("avatarFixedOptions").addEventListener("click", event => {
+      const button = event.target.closest("[data-genero]");
+      if (button) saveFixedAvatarChoice(button.dataset.genero);
+    });
     function photoMarkup(row) {
       const name = row.representante || "Colaborador";
       const key = normalizeName(name);
       const photo = photosByName[key];
-      const avatarSrc = window.TopAvatarLibrary.getUri(key);
       const photoSrc = typeof photo === "string" && /^data:image\/(?:jpeg|png|webp);base64,/.test(photo) ? photo : "";
-      const src = avatarSrc || photoSrc;
-      const alt = avatarSrc ? "Avatar ilustrado de " : "Foto de ";
+      const gender = gendersByName[key];
+      const src = photoSrc || genderAssets[gender] || "";
+      const alt = photoSrc ? "Foto de " : "Avatar 3D de ";
       const picture = src
         ? '<img src="' + topEscape(src) + '" alt="' + alt + topEscape(name) + '">'
         : '<span class="podium-initials">' + topEscape(personInitials(name)) + '</span>';
@@ -1904,19 +1944,19 @@
       select.innerHTML = rows.map(row => '<option value="' + topEscape(normalizeName(row.representante)) + '">' +
         topEscape(row.representante) + '</option>').join("");
       if ([...select.options].some(option => option.value === selected)) select.value = selected;
-      window.TopAvatarLibrary.sync();
       updatePhotoStatus();
     }
 
     function updatePhotoStatus(message) {
       const key = document.getElementById("photoPerson").value;
+      const gender = gendersByName[key];
       const hasPhoto = !!photosByName[key];
-      const hasAvatar = window.TopAvatarLibrary.hasAvatar(key);
       document.getElementById("photoStatus").textContent = message ||
-        (key ? (hasAvatar ? "✅ Avatar personalizado aplicado." :
-          hasPhoto ? "✅ Foto cadastrada para este colaborador." :
-          "Sem personalização: usando iniciais. Escolha uma foto ou avatar.") :
+        (key ? (hasPhoto ? "✅ Foto real selecionada para este colaborador." :
+          genderAssets[gender] ? "✅ Avatar 3D " + gender + " selecionado." :
+          "Sem personalização: serão exibidas as iniciais. Escolha Masculino, Feminino ou foto.") :
           "Primeiro carregue colaboradores no editor.");
+      renderFixedAvatarChoices();
     }
 
     function openPhotoEditor() {
@@ -1926,19 +1966,22 @@
     }
 
     document.getElementById("openPhotoEditor").addEventListener("click", openPhotoEditor);
-    document.getElementById("photoPerson").addEventListener("change", () => { window.TopAvatarLibrary.sync(); updatePhotoStatus(); });
+    document.getElementById("photoPerson").addEventListener("change", () => updatePhotoStatus());
     document.getElementById("removePhoto").addEventListener("click", () => {
       const key = document.getElementById("photoPerson").value;
       if (!key) return;
-      const old = photosByName[key];
+      const prevPhoto = photosByName[key];
+      const prevGender = gendersByName[key];
       delete photosByName[key];
+      delete gendersByName[key];
       try {
         localStorage.setItem(topPhotoKey, JSON.stringify(photosByName));
-        window.TopAvatarLibrary.remove(key);
+        localStorage.setItem(topGenderKey, JSON.stringify(gendersByName));
         updatePhotoStatus("Personalização removida. As iniciais serão exibidas no pódio.");
         if (currentView === "top5") renderTopPerformance(currentData);
       } catch {
-        if (old) photosByName[key] = old;
+        if (prevPhoto) photosByName[key] = prevPhoto;
+        if (prevGender) gendersByName[key] = prevGender;
         updatePhotoStatus("Não foi possível remover a personalização.");
       }
     });
@@ -1963,14 +2006,17 @@
           ctx.drawImage(picture, (picture.width-side)/2, (picture.height-side)/2, side, side, 0, 0, 300, 300);
           const compressed = canvas.toDataURL("image/jpeg", .78);
           const old = photosByName[key];
+          const oldGender = gendersByName[key];
           photosByName[key] = compressed;
+          delete gendersByName[key];
           try {
             localStorage.setItem(topPhotoKey, JSON.stringify(photosByName));
-            window.TopAvatarLibrary.remove(key);
-            updatePhotoStatus("✅ Foto salva neste navegador e aplicada no pódio.");
+            localStorage.setItem(topGenderKey, JSON.stringify(gendersByName));
+            updatePhotoStatus("✅ Foto real salva neste navegador e aplicada no pódio.");
             if (currentView === "top5") renderTopPerformance(currentData);
           } catch {
             if (old) photosByName[key] = old; else delete photosByName[key];
+            if (oldGender) gendersByName[key] = oldGender;
             updatePhotoStatus("Espaço insuficiente no navegador para guardar a foto.");
           }
           input.value = "";
@@ -1982,10 +2028,6 @@
       reader.readAsDataURL(file);
     });
 
-    window.TopAvatarLibrary.init(message => {
-      updatePhotoStatus(message);
-      if (currentView === "top5") renderTopPerformance(currentData);
-    });
     buildConfetti();
     function renderTabs() {
       document.querySelectorAll("[data-view]").forEach(button => {
