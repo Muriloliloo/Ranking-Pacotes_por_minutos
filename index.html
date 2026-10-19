@@ -1030,6 +1030,321 @@
       .hero-title-row #titulo { white-space: normal; }
     }
 
+
+    /* TOP PERFORMANCE - pódio festivo, responsivo e sem alterar cálculos existentes */
+    .board.top-view .table-wrap { display: none; }
+    .top-performance-view[hidden] { display: none !important; }
+    .top-performance-view {
+      isolation: isolate;
+      position: relative;
+      min-height: 0;
+      overflow-x: hidden;
+      overflow-y: auto;
+      margin: 0 clamp(7px, .65vw, 16px) clamp(7px, .85dvh, 15px);
+      padding: clamp(12px, 1.5dvh, 22px) clamp(12px, 1.6vw, 32px) 12px;
+      border: 1px solid rgba(133, 96, 3, .25);
+      border-radius: 12px;
+      background: radial-gradient(ellipse at 50% 0, rgba(255,255,255,.96), transparent 50%), linear-gradient(140deg, #fff3be, #ffda55 50%, #fff4c5);
+      scrollbar-width: thin;
+    }
+    .top-performance-intro {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 0 auto 12px;
+      max-width: 1380px;
+      position: relative;
+      z-index: 1;
+    }
+    .top-performance-kicker {
+      color: #b34b05;
+      font: 900 clamp(10px, .9vw, 14px)/1.3 "Manrope", sans-serif;
+      letter-spacing: .15em;
+    }
+    .top-performance-intro h2 {
+      margin: 3px 0;
+      color: #093657;
+      font: 900 clamp(23px, 2.25vw, 39px)/1.06 "Montserrat", "Manrope", sans-serif;
+      letter-spacing: -.035em;
+    }
+    .top-performance-intro h2 span { color: #d40511; }
+    .top-performance-intro p {
+      margin: 0;
+      color: #755011;
+      font: 750 clamp(11px, .83vw, 15px) "Manrope", sans-serif;
+    }
+    .top-photo-button {
+      flex: none;
+      border: 1px solid rgba(255,255,255,.6);
+      border-radius: 12px;
+      padding: 12px 16px;
+      background: #062f51;
+      box-shadow: 0 7px 15px rgba(0,39,66,.17);
+      color: white;
+      font: 850 12px "Manrope", sans-serif;
+      cursor: pointer;
+    }
+    .top-photo-button:hover { background: #115179; transform: translateY(-1px); }
+    .celebration-confetti { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 0; }
+    .confetti-piece {
+      position: absolute;
+      left: var(--confetti-x);
+      top: -22px;
+      width: 8px;
+      height: 17px;
+      opacity: .65;
+      background: var(--confetti-color);
+      transform: rotate(var(--confetti-angle));
+      animation: confetti-fall var(--confetti-duration) linear infinite;
+      animation-delay: var(--confetti-delay);
+    }
+    @keyframes confetti-fall {
+      0% { transform: translateY(-25px) rotate(0); opacity: 0; }
+      12% { opacity: .7; }
+      88% { opacity: .55; }
+      100% { transform: translateY(590px) rotate(540deg); opacity: 0; }
+    }
+    .podium-stage {
+      position: relative;
+      z-index: 1;
+      max-width: 1380px;
+      margin: 0 auto 13px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      gap: clamp(10px, 1.45vw, 25px);
+    }
+    .podium-card {
+      position: relative;
+      flex: 1 1 0;
+      min-width: 0;
+      max-width: 410px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      justify-content: space-between;
+      gap: 5px;
+      padding: clamp(12px, 1.25vw, 22px) clamp(9px, 1vw, 18px) 13px;
+      border-radius: 23px 23px 13px 13px;
+      border: 2px solid rgba(255,255,255,.84);
+      box-shadow: 0 15px 25px rgba(83,60,2,.16), inset 0 2px 2px rgba(255,255,255,.65);
+      background: linear-gradient(155deg, #ffffff, #f3f5fa 52%, #d1dce9);
+      color: #092943;
+    }
+    .podium-first {
+      min-height: clamp(295px, 37dvh, 415px);
+      order: 2;
+      background: linear-gradient(160deg, #fffdf1, #ffde6a 55%, #f8b729);
+      border-color: #dba21b;
+      box-shadow: 0 18px 32px rgba(159,93,0,.24), inset 0 2px 0 #fff;
+    }
+    .podium-second { min-height: clamp(260px, 32dvh, 359px); order: 1; }
+    .podium-third {
+      min-height: clamp(260px, 32dvh, 359px);
+      order: 3;
+      background: linear-gradient(155deg, #fff9eb, #ecc29d 57%, #ca8a54);
+    }
+    .podium-crown { font-size: clamp(22px, 2.2vw, 34px); line-height: 1; }
+    .podium-medal {
+      position: absolute;
+      top: 10px;
+      left: 13px;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font: 900 clamp(10px, .85vw, 14px) "Manrope", sans-serif;
+      background: rgba(4,36,57,.87);
+      color: #fff;
+    }
+    .podium-portrait {
+      display: grid;
+      place-items: center;
+      flex: none;
+      width: clamp(77px, 7.2vw, 125px);
+      height: clamp(77px, 7.2vw, 125px);
+      border-radius: 50%;
+      border: 5px solid #d6dae4;
+      box-shadow: 0 6px 13px rgba(2,37,67,.21);
+      background: linear-gradient(145deg, #0a4875, #0e233c);
+      color: #fff;
+      overflow: hidden;
+    }
+    .podium-first .podium-portrait {
+      width: clamp(97px, 9vw, 156px);
+      height: clamp(97px, 9vw, 156px);
+      border-color: #f7b600;
+      box-shadow: 0 0 0 4px rgba(255,255,255,.72), 0 8px 22px rgba(98,54,0,.24);
+    }
+    .podium-third .podium-portrait { border-color: #c88952; }
+    .podium-portrait img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .podium-initials { font: 900 clamp(27px, 2.5vw, 42px) "Montserrat", sans-serif; letter-spacing: -.05em; }
+    .podium-first .podium-initials { font-size: clamp(36px, 3.1vw, 54px); }
+    .podium-name {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      overflow: hidden;
+      max-width: 100%;
+      margin: 3px 0 0;
+      min-height: 2.25em;
+      font: 900 clamp(12px, 1.2vw, 20px)/1.14 "Montserrat", sans-serif;
+      text-transform: uppercase;
+      overflow-wrap: anywhere;
+    }
+    .podium-first .podium-name { font-size: clamp(15px, 1.5vw, 24px); }
+    .podium-score {
+      font: 900 clamp(27px, 2.9vw, 47px)/1 "Montserrat", sans-serif;
+      color: #0b3559;
+      letter-spacing: -.04em;
+      white-space: nowrap;
+    }
+    .podium-first .podium-score { color: #bc0715; }
+    .podium-score small {
+      display: block;
+      margin-top: 4px;
+      color: #715c25;
+      font: 800 clamp(9px, .7vw, 12px) "Manrope", sans-serif;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+    .podium-stats {
+      display: flex;
+      justify-content: space-evenly;
+      gap: 7px;
+      width: 100%;
+      padding: 9px 7px;
+      border-radius: 10px;
+      background: rgba(255,255,255,.55);
+      color: #173b59;
+      font: 800 clamp(9px, .78vw, 13px) "Manrope", sans-serif;
+    }
+    .podium-stats b { color: #092943; }
+    .podium-base {
+      align-self: stretch;
+      padding: 9px 7px;
+      margin: 2px -10px -13px;
+      border-radius: 0 0 11px 11px;
+      color: white;
+      font: 900 clamp(10px, .95vw, 16px) "Montserrat", sans-serif;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      background: #7c8b9c;
+    }
+    .podium-first .podium-base { background: #c9940d; }
+    .podium-third .podium-base { background: #a46d42; }
+    .podium-runners {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      max-width: 1130px;
+      margin: 0 auto;
+      gap: 12px;
+    }
+    .podium-runner {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      padding: 10px 15px;
+      background: rgba(255,255,255,.88);
+      border: 1px solid rgba(193,145,33,.33);
+      border-radius: 14px;
+      box-shadow: 0 6px 12px rgba(86,51,0,.08);
+      min-width: 0;
+    }
+    .podium-runner .podium-portrait {
+      width: 51px;
+      height: 51px;
+      border-width: 3px;
+      box-shadow: none;
+    }
+    .podium-runner .podium-initials { font-size: 19px; }
+    .runner-placement {
+      border-radius: 9px;
+      background: #0b3559;
+      padding: 8px;
+      color: white;
+      font: 900 14px "Montserrat", sans-serif;
+      white-space: nowrap;
+    }
+    .runner-description { min-width: 0; flex: 1; }
+    .runner-description strong {
+      display: block;
+      font: 900 clamp(11px, .89vw, 15px)/1.24 "Montserrat", sans-serif;
+      text-transform: uppercase;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .runner-description small { font: 800 10px "Manrope", sans-serif; color: #6d5a26; }
+    .runner-value {
+      color: #b60818;
+      font: 900 clamp(18px, 1.6vw, 26px) "Montserrat", sans-serif;
+      white-space: nowrap;
+    }
+    .runner-value small { display: block; color: #7c5b2c; font: 700 9px "Manrope", sans-serif; text-align: right; }
+    .top-photo-note { position: relative; z-index: 1; margin: 9px 0 0; text-align: center; color: #76612f; font: 650 10px "Manrope", sans-serif; }
+    .top-empty {
+      position: relative; z-index: 1;
+      margin: 70px auto;
+      padding: 25px;
+      max-width: 570px;
+      border-radius: 18px;
+      border: 1px solid rgba(156,115,4,.2);
+      text-align: center;
+      background: rgba(255,255,255,.8);
+      color: #164264;
+      font: 800 15px "Manrope", sans-serif;
+    }
+    .photo-editor-panel {
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid #e0c567;
+      background: #fff0ad;
+      display: grid;
+      gap: 9px;
+    }
+    .photo-editor-heading { font: 900 14px "Montserrat", sans-serif; color: #123956; }
+    .photo-editor-heading small { display: block; margin-top: 3px; font: 650 11px "Manrope", sans-serif; color: #735f32; }
+    .photo-editor-controls { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+    .photo-editor-controls > label:first-child { font: 800 11px "Manrope", sans-serif; }
+    #photoPerson { flex: 1 1 160px; min-width: 0; padding: 9px 10px; border-radius: 8px; border: 1px solid #d1b966; background: white; font: 700 12px "Manrope", sans-serif; }
+    .photo-upload-label, .photo-remove-button {
+      padding: 9px 12px;
+      border: 0;
+      border-radius: 9px;
+      cursor: pointer;
+      font: 850 11px "Manrope", sans-serif;
+    }
+    .photo-upload-label { color: white; background: #0b4169; }
+    .photo-upload-label input { display: none; }
+    .photo-remove-button { color: white; background: #83272a; }
+    .photo-editor-status { margin: 0; color: #654f24; font: 700 11px "Manrope", sans-serif; }
+    @media (max-width: 760px) {
+      .top-performance-intro { align-items: flex-start; flex-wrap: wrap; gap: 8px; }
+      .top-performance-intro h2 { font-size: 22px; }
+      .top-photo-button { padding: 9px 11px; }
+      .podium-stage { gap: 5px; }
+      .podium-card { min-height: 250px; padding: 10px 5px; border-radius: 13px; }
+      .podium-first { min-height: 276px; }
+      .podium-portrait, .podium-first .podium-portrait { width: 65px; height: 65px; border-width: 3px; }
+      .podium-name, .podium-first .podium-name { font-size: 10px; }
+      .podium-score { font-size: 20px; }
+      .podium-stats { flex-direction: column; padding: 5px 2px; gap: 3px; font-size: 9px; }
+      .podium-base { margin-inline: -4px; padding: 7px 3px; font-size: 10px; }
+      .podium-runners { grid-template-columns: 1fr; gap: 6px; }
+      .podium-medal { top: 5px; left: 6px; padding: 3px 5px; font-size: 9px; }
+      .podium-crown { font-size: 21px; }
+    }
+    @media print {
+      .celebration-confetti, .top-photo-button, .top-photo-note { display: none !important; }
+      .board.top-view .top-performance-view { overflow: visible; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .confetti-piece { animation: none; display: none; }
+      .top-photo-button { transition: none; }
+    }
   </style>
 </head>
 <body>
@@ -1058,6 +1373,7 @@
       <nav class="view-tabs" aria-label="Modo de ordenação">
         <button class="active" type="button" data-view="alfabetica">Ordem alfabética</button>
         <button type="button" data-view="performance">Performance</button>
+        <button type="button" data-view="top5">Top Performance</button>
         <button type="button" data-view="volumoso">Performance volumoso</button>
         <button type="button" data-view="gestor">Performance por gestor</button>
         <button type="button" data-view="hora">Gestão hora a hora</button>
@@ -1081,6 +1397,20 @@
         <tbody id="rankingBody"></tbody>
       </table>
     </section>
+
+    <section class="top-performance-view" id="topPerformanceView" aria-label="Pódio Top 5 Performance" hidden>
+      <div class="celebration-confetti" id="celebrationConfetti" aria-hidden="true"></div>
+      <div class="top-performance-intro">
+        <div>
+          <div class="top-performance-kicker">🏆 HALL DA FAMA · SSP15</div>
+          <h2>OS DESTAQUES DO TURNO <span>AM</span></h2>
+          <p>Os cinco melhores resultados em pacotes por minuto</p>
+        </div>
+        <button class="top-photo-button" type="button" id="openPhotoEditor">📸 Cadastrar fotos</button>
+      </div>
+      <div id="top5Content" aria-live="polite"></div>
+      <p class="top-photo-note">📸 Fotos cadastradas neste navegador • Ranking automático conforme os dados da aba Performance</p>
+    </section>
   </main>
 
   <div class="tools">
@@ -1095,6 +1425,19 @@
     </header>
     <div class="editor-body">
       <p class="paste-help">Escolha a hora, cole Nomes, Tempo efetivo e Unidades, e clique em Aplicar dados. Todas as abas usam a mesma base; a Gestão hora a hora guarda cada coluna lançada para 05h, 06h, 07h e 08h.</p>
+
+      <section class="photo-editor-panel" aria-label="Fotos do pódio">
+        <div class="photo-editor-heading">📸 Fotos dos destaques <small>Opcional · mantidas neste navegador</small></div>
+        <div class="photo-editor-controls">
+          <label for="photoPerson">Colaborador</label>
+          <select id="photoPerson" aria-label="Selecione o colaborador"></select>
+          <label class="photo-upload-label" for="photoFile">Escolher foto
+            <input type="file" id="photoFile" accept="image/png,image/jpeg,image/webp">
+          </label>
+          <button type="button" id="removePhoto" class="photo-remove-button">Remover foto</button>
+        </div>
+        <p class="photo-editor-status" id="photoStatus">Escolha um colaborador e uma foto. O painel usará um avatar com as iniciais quando não houver foto.</p>
+      </section>
       <div class="paste-grid">
         <div class="paste-field">
           <label for="pasteNames">Nomes</label>
@@ -1428,6 +1771,158 @@
       });
     }
 
+
+    /* Novo Top Performance: usa os mesmos pacotes/minuto da aba Performance */
+    const topPhotoKey = "ranking-pacotes-fotos-v1";
+    let photosByName = (() => {
+      try { return JSON.parse(localStorage.getItem(topPhotoKey) || "{}") || {}; }
+      catch { return {}; }
+    })();
+
+    function topEscape(value) {
+      return String(value == null ? "" : value).replace(/[&<>"']/g, ch =>
+        ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[ch]);
+    }
+
+    function personInitials(name) {
+      const words = String(name || "?").trim().split(/\s+/).filter(Boolean);
+      return ((words[0] || "?").charAt(0) + (words.length > 1 ? words[words.length - 1].charAt(0) : "")).toUpperCase();
+    }
+
+    function photoMarkup(row) {
+      const name = row.representante || "Colaborador";
+      const photo = photosByName[normalizeName(name)];
+      const picture = typeof photo === "string" && /^data:image\/(?:jpeg|png|webp);base64,/.test(photo)
+        ? '<img src="' + topEscape(photo) + '" alt="Foto de ' + topEscape(name) + '">'
+        : '<span class="podium-initials">' + topEscape(personInitials(name)) + '</span>';
+      return '<div class="podium-portrait">' + picture + '</div>';
+    }
+
+    function podiumCard(row, rank) {
+      const cls = ["first", "second", "third"][rank - 1];
+      const crown = rank === 1 ? "👑" : rank === 2 ? "🥈" : "🥉";
+      const title = rank === 1 ? "Campeão do turno" : rank === 2 ? "Vice-campeão" : "3º lugar";
+      return '<article class="podium-card podium-' + cls + '">' +
+        '<span class="podium-medal">' + rank + 'º LUGAR</span>' +
+        '<div class="podium-crown" aria-hidden="true">' + crown + '</div>' +
+        photoMarkup(row) +
+        '<h3 class="podium-name" title="' + topEscape(row.representante) + '">' + topEscape(row.representante) + '</h3>' +
+        '<div class="podium-score">' + dec.format(pacotesPorMinuto(row)) + '<small>Pacotes por minuto</small></div>' +
+        '<div class="podium-stats"><span>📦 <b>' + br.format(Number(row.unidades || 0)) + '</b> unidades</span><span>⏱ <b>' + topEscape(row.tempoEfetivo || "-") + '</b></span></div>' +
+        '<div class="podium-base">' + title + '</div></article>';
+    }
+
+    function runnerCard(row, rank) {
+      return '<article class="podium-runner">' +
+        '<span class="runner-placement">' + rank + 'º</span>' +
+        photoMarkup(row) +
+        '<div class="runner-description"><strong title="' + topEscape(row.representante) + '">' + topEscape(row.representante) + '</strong>' +
+        '<small>📦 ' + br.format(Number(row.unidades || 0)) + ' unidades · ⏱ ' + topEscape(row.tempoEfetivo || "-") + '</small></div>' +
+        '<div class="runner-value">' + dec.format(pacotesPorMinuto(row)) + '<small>pacotes/min</small></div></article>';
+    }
+
+    function renderTopPerformance(data) {
+      const root = document.getElementById("top5Content");
+      const top = performanceRows(data)
+        .filter(row => row.representante && pacotesPorMinuto(row) > 0)
+        .slice(0, 5);
+      if (!top.length) {
+        root.innerHTML = '<div class="top-empty">🏆 Aguardando dados de produtividade.<br>Alimente o editor para conhecer os cinco destaques!</div>';
+        return;
+      }
+      const podium = [top[1], top[0], top[2]]
+        .filter(Boolean)
+        .map(row => podiumCard(row, top.indexOf(row) + 1))
+        .join("");
+      root.innerHTML = '<div class="podium-stage">' + podium + '</div>' +
+        '<div class="podium-runners">' + top.slice(3, 5).map((row, i) => runnerCard(row, i + 4)).join("") + '</div>';
+    }
+
+    function buildConfetti() {
+      const el = document.getElementById("celebrationConfetti");
+      const tones = ["#d40511", "#164a79", "#f7ab00", "#ffffff", "#1e8856"];
+      el.innerHTML = Array.from({length: 26}, (_, i) => {
+        return '<span class="confetti-piece" style="--confetti-x:' + ((i * 37 + 11) % 100) +
+          '%;--confetti-color:' + tones[i % tones.length] +
+          ';--confetti-angle:' + (i * 32 % 170) + 'deg;--confetti-duration:' +
+          (5 + (i % 5)) + 's;--confetti-delay:-' + (i % 8) + 's"></span>';
+      }).join("");
+    }
+
+    function populatePhotoSelect(rows) {
+      const select = document.getElementById("photoPerson");
+      const selected = select.value;
+      select.innerHTML = rows.map(row => '<option value="' + topEscape(normalizeName(row.representante)) + '">' +
+        topEscape(row.representante) + '</option>').join("");
+      if ([...select.options].some(option => option.value === selected)) select.value = selected;
+      updatePhotoStatus();
+    }
+
+    function updatePhotoStatus(message) {
+      const key = document.getElementById("photoPerson").value;
+      const hasPhoto = !!photosByName[key];
+      document.getElementById("photoStatus").textContent = message ||
+        (key ? (hasPhoto ? "✅ Foto cadastrada para este colaborador." : "Avatar com iniciais. Selecione uma foto para personalizar.") : "Primeiro carregue colaboradores no editor.");
+    }
+
+    function openPhotoEditor() {
+      populateEditor(currentData);
+      document.getElementById("editor").classList.add("open");
+      document.getElementById("photoPerson").focus();
+    }
+
+    document.getElementById("openPhotoEditor").addEventListener("click", openPhotoEditor);
+    document.getElementById("photoPerson").addEventListener("change", () => updatePhotoStatus());
+    document.getElementById("removePhoto").addEventListener("click", () => {
+      const key = document.getElementById("photoPerson").value;
+      if (!key) return;
+      delete photosByName[key];
+      try {
+        localStorage.setItem(topPhotoKey, JSON.stringify(photosByName));
+        updatePhotoStatus("Foto removida. O avatar com iniciais será utilizado.");
+        if (currentView === "top5") renderTopPerformance(currentData);
+      } catch { updatePhotoStatus("Não foi possível atualizar o armazenamento do navegador."); }
+    });
+    document.getElementById("photoFile").addEventListener("change", event => {
+      const input = event.currentTarget;
+      const file = input.files && input.files[0];
+      const key = document.getElementById("photoPerson").value;
+      if (!file || !key) { updatePhotoStatus("Selecione um colaborador e uma foto."); return; }
+      if (!["image/jpeg","image/png","image/webp"].includes(file.type) || file.size > 8 * 1024 * 1024) {
+        updatePhotoStatus("Use uma foto JPG, PNG ou WebP com até 8 MB.");
+        input.value = "";
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = () => {
+        const picture = new Image();
+        picture.onload = () => {
+          const canvas = document.createElement("canvas");
+          canvas.width = canvas.height = 300;
+          const ctx = canvas.getContext("2d");
+          const side = Math.min(picture.width, picture.height);
+          ctx.drawImage(picture, (picture.width-side)/2, (picture.height-side)/2, side, side, 0, 0, 300, 300);
+          const compressed = canvas.toDataURL("image/jpeg", .78);
+          const old = photosByName[key];
+          photosByName[key] = compressed;
+          try {
+            localStorage.setItem(topPhotoKey, JSON.stringify(photosByName));
+            updatePhotoStatus("✅ Foto salva neste navegador. Aparece automaticamente no pódio.");
+            if (currentView === "top5") renderTopPerformance(currentData);
+          } catch {
+            if (old) photosByName[key] = old; else delete photosByName[key];
+            updatePhotoStatus("Espaço insuficiente no navegador para guardar a foto.");
+          }
+          input.value = "";
+        };
+        picture.onerror = () => updatePhotoStatus("Não foi possível abrir essa imagem.");
+        picture.src = reader.result;
+      };
+      reader.onerror = () => updatePhotoStatus("Falha ao ler a foto.");
+      reader.readAsDataURL(file);
+    });
+
+    buildConfetti();
     function renderTabs() {
       document.querySelectorAll("[data-view]").forEach(button => {
         button.classList.toggle("active", button.dataset.view === currentView);
@@ -1438,7 +1933,9 @@
       renderTabs();
       document.querySelector(".board").classList.toggle("gestor-view", currentView === "gestor");
       document.querySelector(".board").classList.toggle("hora-view", currentView === "hora");
-      document.getElementById("titulo").textContent = currentView === "performance"
+      document.querySelector(".board").classList.toggle("top-view", currentView === "top5");
+      document.getElementById("topPerformanceView").hidden = currentView !== "top5";
+      document.getElementById("titulo").textContent = currentView === "top5" ? "TOP PERFORMANCE" : currentView === "performance"
         ? (data.tituloPerformance || data.titulo || "TOP POR PACOTES/MINUTOS")
         : currentView === "volumoso"
           ? (data.tituloVolumoso || "PERFORMANCE VOLUMOSO")
@@ -1447,6 +1944,7 @@
         : currentView === "hora"
           ? (data.tituloHora || "GESTÃO HORA A HORA")
         : (data.tituloAlfabetico || "PRODUTIVIDADE AM");
+      if (currentView === "top5") { renderTopPerformance(data); return; }
       const headers = document.querySelectorAll("thead th");
       if (currentView === "hora") {
         headers[0].textContent = "Gestor";
@@ -1516,6 +2014,7 @@
           return key && rows.findIndex(item => normalizeName(item.representante) === key) === index;
         })
         .sort((a, b) => String(a.representante || "").localeCompare(String(b.representante || ""), "pt-BR", { sensitivity: "base" }));
+      populatePhotoSelect(knownRows);
       document.getElementById("pasteNames").value = "";
       document.getElementById("pasteTimes").value = "";
       document.getElementById("pasteUnits").value = "";
