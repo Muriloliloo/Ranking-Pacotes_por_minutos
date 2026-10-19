@@ -1345,6 +1345,25 @@
       .confetti-piece { animation: none; display: none; }
       .top-photo-button { transition: none; }
     }
+
+    /* Biblioteca SSP15: dez avatares ilustrados e cores personalizáveis */
+    .avatar-library { display: grid; gap: 10px; padding: 12px; border-radius: 12px; border: 1px solid #c4d7e8; background: linear-gradient(135deg,#fffcf3,#eaf4ff); }
+    .avatar-library-heading { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 5px 10px; }
+    .avatar-library-heading strong { color: #113d5d; font: 900 13px "Montserrat",sans-serif; }
+    .avatar-library-heading span,.avatar-gallery-hint { color: #617184; font: 650 11px/1.35 "Manrope",sans-serif; }
+    .avatar-controls { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 8px; }
+    .avatar-controls label { display: grid; min-width: 0; gap: 4px; color: #173e59; font: 800 10px "Manrope",sans-serif; }
+    .avatar-controls select { width: 100%; min-width: 0; border: 1px solid #cbd5e1; border-radius: 8px; padding: 8px 5px; background: #fff; color: #173e59; font: 750 11px "Manrope",sans-serif; }
+    .avatar-controls select:focus-visible,.avatar-gallery button:focus-visible { outline: 3px solid #d40511; outline-offset: 2px; }
+    .avatar-gallery { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 8px; }
+    .avatar-gallery button { min-width: 0; padding: 7px 3px; display: grid; justify-items: center; gap: 5px; border: 2px solid #d4e0ea; border-radius: 12px; background: #fff; color: #27465d; cursor: pointer; font: 800 10px "Manrope",sans-serif; box-shadow: 0 2px 7px rgba(13,48,79,.07); transition: transform .13s,border-color .13s; }
+    .avatar-gallery button:hover { transform: translateY(-2px); border-color: #347eab; }
+    .avatar-gallery button.selected { border-color: #d40511; background: #fff2df; box-shadow: 0 0 0 2px rgba(212,5,17,.13); }
+    .avatar-gallery img { display: block; width: min(100%,79px); aspect-ratio: 1; border-radius: 50%; }
+    .avatar-gallery small { display: block; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .avatar-gallery-hint { margin: 0; }
+    @media (max-width: 550px) { .avatar-controls { grid-template-columns: repeat(2,minmax(0,1fr)); } .avatar-gallery { grid-template-columns: repeat(3,minmax(0,1fr)); } }
+    @media (prefers-reduced-motion: reduce) { .avatar-gallery button { transition: none; } }
   </style>
 </head>
 <body>
@@ -1427,16 +1446,35 @@
       <p class="paste-help">Escolha a hora, cole Nomes, Tempo efetivo e Unidades, e clique em Aplicar dados. Todas as abas usam a mesma base; a Gestão hora a hora guarda cada coluna lançada para 05h, 06h, 07h e 08h.</p>
 
       <section class="photo-editor-panel" aria-label="Fotos do pódio">
-        <div class="photo-editor-heading">📸 Fotos dos destaques <small>Opcional · mantidas neste navegador</small></div>
+        <div class="photo-editor-heading">🎨 Personalizar colaborador <small>Foto real ou avatar ilustrado · guardados neste navegador</small></div>
         <div class="photo-editor-controls">
           <label for="photoPerson">Colaborador</label>
           <select id="photoPerson" aria-label="Selecione o colaborador"></select>
           <label class="photo-upload-label" for="photoFile">Escolher foto
             <input type="file" id="photoFile" accept="image/png,image/jpeg,image/webp">
           </label>
-          <button type="button" id="removePhoto" class="photo-remove-button">Remover foto</button>
+          <button type="button" id="removePhoto" class="photo-remove-button">Remover foto/avatar</button>
         </div>
-        <p class="photo-editor-status" id="photoStatus">Escolha um colaborador e uma foto. O painel usará um avatar com as iniciais quando não houver foto.</p>
+        <div class="avatar-library">
+          <div class="avatar-library-heading"><strong>🎭 Biblioteca de avatares</strong><span>Escolha o estilo que preferir</span></div>
+          <div class="avatar-controls">
+            <label>Estilo
+              <select id="avatarCategory"><option value="masculino">Masculinos</option><option value="feminino">Femininos</option></select>
+            </label>
+            <label>Tom de pele
+              <select id="avatarSkin"><option value="clara">Claro</option><option value="media" selected>Médio</option><option value="morena">Moreno</option><option value="escura">Escuro</option></select>
+            </label>
+            <label>Cor do cabelo
+              <select id="avatarHairColor"><option value="preto">Preto</option><option value="castanho">Castanho</option><option value="loiro">Loiro</option><option value="ruivo">Ruivo</option><option value="grisalho">Grisalho</option></select>
+            </label>
+            <label>Fundo
+              <select id="avatarBackground"><option value="azul">Azul</option><option value="dourado">Dourado</option><option value="lilas">Lilás</option><option value="verde">Verde</option></select>
+            </label>
+          </div>
+          <div id="avatarGallery" class="avatar-gallery" role="group" aria-label="Biblioteca de avatares"></div>
+          <p class="avatar-gallery-hint">Clique em um personagem para aplicar. Você pode mudar as cores quando quiser.</p>
+        </div>
+        <p class="photo-editor-status" id="photoStatus" role="status">Escolha uma foto ou um avatar para o colaborador.</p>
       </section>
       <div class="paste-grid">
         <div class="paste-field">
@@ -1475,6 +1513,7 @@
   </aside>
 
   <script src="ranking-dados.js"></script>
+  <script src="avatar-library.js"></script>
   <script>
     const br = new Intl.NumberFormat("pt-BR");
     const dec = new Intl.NumberFormat("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -1791,9 +1830,14 @@
 
     function photoMarkup(row) {
       const name = row.representante || "Colaborador";
-      const photo = photosByName[normalizeName(name)];
-      const picture = typeof photo === "string" && /^data:image\/(?:jpeg|png|webp);base64,/.test(photo)
-        ? '<img src="' + topEscape(photo) + '" alt="Foto de ' + topEscape(name) + '">'
+      const key = normalizeName(name);
+      const photo = photosByName[key];
+      const avatarSrc = window.TopAvatarLibrary.getUri(key);
+      const photoSrc = typeof photo === "string" && /^data:image\/(?:jpeg|png|webp);base64,/.test(photo) ? photo : "";
+      const src = avatarSrc || photoSrc;
+      const alt = avatarSrc ? "Avatar ilustrado de " : "Foto de ";
+      const picture = src
+        ? '<img src="' + topEscape(src) + '" alt="' + alt + topEscape(name) + '">'
         : '<span class="podium-initials">' + topEscape(personInitials(name)) + '</span>';
       return '<div class="podium-portrait">' + picture + '</div>';
     }
@@ -1860,14 +1904,19 @@
       select.innerHTML = rows.map(row => '<option value="' + topEscape(normalizeName(row.representante)) + '">' +
         topEscape(row.representante) + '</option>').join("");
       if ([...select.options].some(option => option.value === selected)) select.value = selected;
+      window.TopAvatarLibrary.sync();
       updatePhotoStatus();
     }
 
     function updatePhotoStatus(message) {
       const key = document.getElementById("photoPerson").value;
       const hasPhoto = !!photosByName[key];
+      const hasAvatar = window.TopAvatarLibrary.hasAvatar(key);
       document.getElementById("photoStatus").textContent = message ||
-        (key ? (hasPhoto ? "✅ Foto cadastrada para este colaborador." : "Avatar com iniciais. Selecione uma foto para personalizar.") : "Primeiro carregue colaboradores no editor.");
+        (key ? (hasAvatar ? "✅ Avatar personalizado aplicado." :
+          hasPhoto ? "✅ Foto cadastrada para este colaborador." :
+          "Sem personalização: usando iniciais. Escolha uma foto ou avatar.") :
+          "Primeiro carregue colaboradores no editor.");
     }
 
     function openPhotoEditor() {
@@ -1877,16 +1926,21 @@
     }
 
     document.getElementById("openPhotoEditor").addEventListener("click", openPhotoEditor);
-    document.getElementById("photoPerson").addEventListener("change", () => updatePhotoStatus());
+    document.getElementById("photoPerson").addEventListener("change", () => { window.TopAvatarLibrary.sync(); updatePhotoStatus(); });
     document.getElementById("removePhoto").addEventListener("click", () => {
       const key = document.getElementById("photoPerson").value;
       if (!key) return;
+      const old = photosByName[key];
       delete photosByName[key];
       try {
         localStorage.setItem(topPhotoKey, JSON.stringify(photosByName));
-        updatePhotoStatus("Foto removida. O avatar com iniciais será utilizado.");
+        window.TopAvatarLibrary.remove(key);
+        updatePhotoStatus("Personalização removida. As iniciais serão exibidas no pódio.");
         if (currentView === "top5") renderTopPerformance(currentData);
-      } catch { updatePhotoStatus("Não foi possível atualizar o armazenamento do navegador."); }
+      } catch {
+        if (old) photosByName[key] = old;
+        updatePhotoStatus("Não foi possível remover a personalização.");
+      }
     });
     document.getElementById("photoFile").addEventListener("change", event => {
       const input = event.currentTarget;
@@ -1912,7 +1966,8 @@
           photosByName[key] = compressed;
           try {
             localStorage.setItem(topPhotoKey, JSON.stringify(photosByName));
-            updatePhotoStatus("✅ Foto salva neste navegador. Aparece automaticamente no pódio.");
+            window.TopAvatarLibrary.remove(key);
+            updatePhotoStatus("✅ Foto salva neste navegador e aplicada no pódio.");
             if (currentView === "top5") renderTopPerformance(currentData);
           } catch {
             if (old) photosByName[key] = old; else delete photosByName[key];
@@ -1927,6 +1982,10 @@
       reader.readAsDataURL(file);
     });
 
+    window.TopAvatarLibrary.init(message => {
+      updatePhotoStatus(message);
+      if (currentView === "top5") renderTopPerformance(currentData);
+    });
     buildConfetti();
     function renderTabs() {
       document.querySelectorAll("[data-view]").forEach(button => {
