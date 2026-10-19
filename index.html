@@ -922,23 +922,6 @@
       .top { padding-top: 10px; }
     }
 
-    /* Uma única escala tipográfica para o título das cinco abas. */
-    .top { --titulo-unificado: clamp(27px, 2.55vw, 51px); }
-    .top #titulo {
-      font-size: var(--titulo-unificado);
-    }
-    @media (max-width: 1100px) {
-      .top { --titulo-unificado: clamp(22px, 2.55vw, 30px); }
-    }
-    @media (max-width: 760px) {
-      .top { --titulo-unificado: clamp(22px, 3.7vw, 30px); }
-    }
-    @media (max-width: 480px) {
-      .top { --titulo-unificado: clamp(18px, 4.8vw, 22px); }
-      .hero-title-row { flex-wrap: wrap; justify-content: center; row-gap: 0; }
-      .hero-title-row #titulo { white-space: normal; }
-    }
-
     /* Cabeçalho proporcional e compacto em todas as visualizações (19/10/2026) */
     .board, .board.hora-view {
       grid-template-rows: clamp(148px, 18.2dvh, 176px) minmax(0, 1fr);
@@ -1024,6 +1007,23 @@
     @media print {
       .board, .board.hora-view { grid-template-rows: 156px minmax(0, 1fr); }
     }
+    /* Uma única escala tipográfica para o título das cinco abas. */
+    .top { --titulo-unificado: clamp(27px, 2.55vw, 51px); }
+    .top #titulo {
+      font-size: var(--titulo-unificado);
+    }
+    @media (max-width: 1100px) {
+      .top { --titulo-unificado: clamp(22px, 2.55vw, 30px); }
+    }
+    @media (max-width: 760px) {
+      .top { --titulo-unificado: clamp(22px, 3.7vw, 30px); }
+    }
+    @media (max-width: 480px) {
+      .top { --titulo-unificado: clamp(18px, 4.8vw, 22px); }
+      .hero-title-row { flex-wrap: wrap; justify-content: center; row-gap: 0; }
+      .hero-title-row #titulo { white-space: normal; }
+    }
+
   </style>
 </head>
 <body>
