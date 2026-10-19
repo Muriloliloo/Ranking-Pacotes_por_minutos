@@ -1404,12 +1404,12 @@
         <div>
           <div class="top-performance-kicker">🏆 HALL DA FAMA · SSP15</div>
           <h2>OS DESTAQUES DO TURNO <span>AM</span></h2>
-          <p>Os cinco melhores resultados em pacotes por minuto</p>
+          <p>Os cinco colaboradores que mais biparam pacotes na operação</p>
         </div>
         <button class="top-photo-button" type="button" id="openPhotoEditor">📸 Cadastrar fotos</button>
       </div>
       <div id="top5Content" aria-live="polite"></div>
-      <p class="top-photo-note">📸 Fotos cadastradas neste navegador • Ranking automático conforme os dados da aba Performance</p>
+      <p class="top-photo-note">📸 Fotos cadastradas neste navegador • Classificação automática pelo total de pacotes bipados</p>
     </section>
   </main>
 
@@ -1772,7 +1772,7 @@
     }
 
 
-    /* Novo Top Performance: usa os mesmos pacotes/minuto da aba Performance */
+    /* Top Performance: ordenação exclusiva pela quantidade de pacotes bipados (unidades). */
     const topPhotoKey = "ranking-pacotes-fotos-v1";
     let photosByName = (() => {
       try { return JSON.parse(localStorage.getItem(topPhotoKey) || "{}") || {}; }
@@ -1807,8 +1807,8 @@
         '<div class="podium-crown" aria-hidden="true">' + crown + '</div>' +
         photoMarkup(row) +
         '<h3 class="podium-name" title="' + topEscape(row.representante) + '">' + topEscape(row.representante) + '</h3>' +
-        '<div class="podium-score">' + dec.format(pacotesPorMinuto(row)) + '<small>Pacotes por minuto</small></div>' +
-        '<div class="podium-stats"><span>📦 <b>' + br.format(Number(row.unidades || 0)) + '</b> unidades</span><span>⏱ <b>' + topEscape(row.tempoEfetivo || "-") + '</b></span></div>' +
+        '<div class="podium-score">' + br.format(Number(row.unidades || 0)) + '<small>Pacotes bipados</small></div>' +
+        '<div class="podium-stats"><span>⚡ <b>' + dec.format(pacotesPorMinuto(row)) + '</b> pacotes/min</span><span>⏱ <b>' + topEscape(row.tempoEfetivo || "-") + '</b></span></div>' +
         '<div class="podium-base">' + title + '</div></article>';
     }
 
@@ -1817,17 +1817,22 @@
         '<span class="runner-placement">' + rank + 'º</span>' +
         photoMarkup(row) +
         '<div class="runner-description"><strong title="' + topEscape(row.representante) + '">' + topEscape(row.representante) + '</strong>' +
-        '<small>📦 ' + br.format(Number(row.unidades || 0)) + ' unidades · ⏱ ' + topEscape(row.tempoEfetivo || "-") + '</small></div>' +
-        '<div class="runner-value">' + dec.format(pacotesPorMinuto(row)) + '<small>pacotes/min</small></div></article>';
+        '<small>⚡ ' + dec.format(pacotesPorMinuto(row)) + ' pacotes/min · ⏱ ' + topEscape(row.tempoEfetivo || "-") + '</small></div>' +
+        '<div class="runner-value">' + br.format(Number(row.unidades || 0)) + '<small>pacotes bipados</small></div></article>';
     }
 
     function renderTopPerformance(data) {
       const root = document.getElementById("top5Content");
-      const top = performanceRows(data)
-        .filter(row => row.representante && pacotesPorMinuto(row) > 0)
+      const top = [...(data.linhas || [])]
+        .filter(row => row.representante && Number(row.unidades || 0) > 0)
+        .sort((a, b) =>
+          Number(b.unidades || 0) - Number(a.unidades || 0) ||
+          pacotesPorMinuto(b) - pacotesPorMinuto(a) ||
+          String(a.representante).localeCompare(String(b.representante), "pt-BR", { sensitivity: "base" })
+        )
         .slice(0, 5);
       if (!top.length) {
-        root.innerHTML = '<div class="top-empty">🏆 Aguardando dados de produtividade.<br>Alimente o editor para conhecer os cinco destaques!</div>';
+        root.innerHTML = '<div class="top-empty">🏆 Aguardando dados de pacotes bipados.<br>Alimente o editor para conhecer os cinco destaques!</div>';
         return;
       }
       const podium = [top[1], top[0], top[2]]
