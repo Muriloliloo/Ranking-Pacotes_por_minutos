@@ -1450,9 +1450,9 @@
       border-radius: 0;
       box-shadow: none;
       background: transparent;
-      justify-content: flex-end;
-      gap: 7px;
-      padding: 9px 4px 3px;
+      justify-content: space-between;
+      gap: 5px;
+      padding: clamp(33px, 4.2dvh, 55px) 4px 3px;
       color: #082e4e;
       min-height: 0;
       height: 92%;
@@ -1657,6 +1657,26 @@
       .board.top-view .top5-leaderboard {grid-column:1;grid-row:4;}
       .board.top-view .top-photo-note {grid-column:1;grid-row:5;}
       .top5-leaderboard table {min-width:560px;}
+    }
+    @media (max-width:520px) {
+      .board.top-view .top-performance-view {grid-template-columns:minmax(0,1fr);width:calc(100% - 10px);margin-inline:5px;}
+      .board.top-view .top-performance-intro {max-width:100%;overflow-wrap:anywhere;}
+      .board.top-view .top-performance-intro h2 {font-size:clamp(21px,6vw,27px);}
+      .board.top-view .podium-stage {min-width:0;width:100%;gap:3px;}
+      .board.top-view .podium-card {min-width:0;width:0;padding:35px 2px 3px;}
+      .board.top-view .podium-medal {font-size:9px;padding:4px 5px;top:4px;}
+      .board.top-view .podium-card .podium-portrait {width:clamp(48px,13vw,64px);height:clamp(48px,13vw,64px);}
+      .board.top-view .podium-first .podium-portrait {width:clamp(53px,14vw,70px);height:clamp(53px,14vw,70px);}
+      .board.top-view .podium-crown {font-size:20px;}
+      .board.top-view .podium-name,.board.top-view .podium-first .podium-name {font-size:9px;line-height:1.15;}
+      .board.top-view .podium-score {font-size:17px;padding:4px 1px;}
+      .board.top-view .podium-score small {font-size:7px;letter-spacing:0;}
+      .board.top-view .podium-stats {flex-direction:column;gap:1px;line-height:1.15;font-size:7px;}
+      .board.top-view .podium-base {font-size:7px;letter-spacing:0;padding:4px 0;}
+      .board.top-view .podium-runners {grid-template-columns:minmax(0,1fr);}
+      .board.top-view .podium-runner {min-width:0;}
+      .board.top-view .top5-leaderboard {max-width:100%;overflow-x:auto;}
+      .board.top-view .top-performance-intro h2 {overflow-wrap:normal;}
     }
     @media (prefers-reduced-motion:reduce) {
       .board.top-view .podium-portrait,.board.top-view .confetti-piece {animation:none!important;}
