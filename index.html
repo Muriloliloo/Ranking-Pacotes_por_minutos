@@ -1009,8 +1009,14 @@
     }
     /* Uma única escala tipográfica para o título das cinco abas. */
     .top { --titulo-unificado: clamp(27px, 2.55vw, 51px); }
-    .top #titulo {
+    .top #titulo,
+    .top .hero-title-site {
       font-size: var(--titulo-unificado);
+      line-height: 1.01;
+      font-family: "Montserrat", "Manrope", "Segoe UI", sans-serif;
+      font-weight: 900;
+      letter-spacing: .02em;
+      text-shadow: 1px 2px 0 rgba(13, 60, 125, .35), 2px 5px 8px rgba(5, 42, 111, .24);
     }
     @media (max-width: 1100px) {
       .top { --titulo-unificado: clamp(22px, 2.55vw, 30px); }
