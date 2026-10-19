@@ -929,6 +929,100 @@
       .board, .board.hora-view { grid-template-rows: 192px minmax(0, 1fr); }
       .top { padding-top: 10px; }
     }
+
+    /* Cabeçalho proporcional e compacto em todas as visualizações (19/10/2026) */
+    .board, .board.hora-view {
+      grid-template-rows: clamp(148px, 18.2dvh, 176px) minmax(0, 1fr);
+    }
+    .top {
+      gap: clamp(4px, .55dvh, 8px);
+      padding: clamp(8px, 1dvh, 12px) clamp(12px, 1.4vw, 25px) clamp(6px, .7dvh, 9px);
+    }
+    .top-hero {
+      grid-template-columns: minmax(250px, .75fr) minmax(0, 2.35fr) minmax(90px, .35fr);
+      gap: clamp(6px, .7vw, 14px);
+    }
+    .brand-pair {
+      gap: clamp(6px, .55vw, 10px);
+      padding: 6px clamp(8px, .8vw, 14px);
+    }
+    .brand-dhl {
+      width: clamp(101px, 7.9vw, 132px);
+      height: clamp(24px, 2.45vw, 34px);
+    }
+    .brand-divider { height: 29px; }
+    .brand-ml-icon {
+      width: clamp(34px, 2.8vw, 45px);
+      height: clamp(26px, 2.5vw, 36px);
+    }
+    .brand-ml-wordmark { font-size: clamp(12px, .98vw, 17px); }
+    .hero-heading { gap: clamp(4px, .55dvh, 8px); }
+    .hero-eyebrow {
+      font-size: clamp(9px, .72vw, 12px);
+      line-height: 1.2;
+      letter-spacing: .19em;
+    }
+    .top #titulo {
+      font-size: clamp(34px, 3.05vw, 60px);
+      line-height: 1.01;
+      letter-spacing: .02em;
+    }
+    .hero-title-row { gap: clamp(6px, .72vw, 13px); }
+    .hero-title-site {
+      font-size: clamp(18px, 1.82vw, 35px);
+      line-height: 1.01;
+      letter-spacing: .02em;
+    }
+    .board:has([data-view="volumoso"].active) .top #titulo,
+    .board:has([data-view="gestor"].active) .top #titulo,
+    .board:has([data-view="performance"].active) .top #titulo {
+      font-size: clamp(24px, 2.38vw, 45px);
+    }
+    .hero-right { padding-bottom: clamp(1px, .4dvh, 5px); }
+    .top .view-tabs { padding: 3px; }
+    .top .view-tabs button, .board.hora-view .top .view-tabs button {
+      height: clamp(26px, 2.9dvh, 34px);
+    }
+
+    @media (max-width: 1100px) {
+      .top-hero { grid-template-columns: minmax(234px, .85fr) minmax(0, 1.6fr); }
+      .brand-pair { padding: 5px 8px; }
+      .brand-dhl { width: 106px; }
+      .brand-ml-icon { width: 36px; }
+      .brand-ml-wordmark { font-size: 13px; }
+      .top #titulo { font-size: clamp(24px, 2.85vw, 39px); }
+      .hero-title-site { font-size: clamp(16px, 1.68vw, 24px); }
+      .hero-title-row { gap: 7px; }
+    }
+    @media (max-width: 760px) {
+      .board, .board.hora-view { grid-template-rows: 198px minmax(0, 1fr); }
+      .top { padding: 35px 7px 7px; gap: 5px; }
+      .top-hero { grid-template-columns: 1fr; gap: 5px; }
+      .brand-pair { padding: 4px 9px; }
+      .brand-dhl { width: 95px; height: 25px; }
+      .brand-divider { height: 25px; }
+      .brand-ml-icon { width: 32px; height: 25px; }
+      .brand-ml-wordmark { font-size: 12px; }
+      .hero-heading { gap: 4px; }
+      .hero-eyebrow { font-size: 9px; letter-spacing: .11em; }
+      .top #titulo { font-size: clamp(24px, 5.7vw, 35px); }
+      .hero-title-row { gap: 6px; }
+      .hero-title-site { font-size: clamp(12px, 2.95vw, 19px); }
+      .board:has([data-view="volumoso"].active) .top #titulo,
+      .board:has([data-view="gestor"].active) .top #titulo,
+      .board:has([data-view="performance"].active) .top #titulo {
+        font-size: clamp(19px, 4.1vw, 29px);
+      }
+    }
+    @media (max-width: 480px) {
+      .board, .board.hora-view { grid-template-rows: 207px minmax(0, 1fr); }
+      .top #titulo { font-size: clamp(20px, 5.1vw, 28px); }
+      .hero-title-site { font-size: clamp(11px, 3.05vw, 16px); }
+      .hero-title-row { gap: 5px; }
+    }
+    @media print {
+      .board, .board.hora-view { grid-template-rows: 156px minmax(0, 1fr); }
+    }
   </style>
 </head>
 <body>
